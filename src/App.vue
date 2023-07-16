@@ -7,6 +7,7 @@ const { wormholes } = wormholeStore();
 const { currMassKg, ships, solver, addShip, removeShip } = solverStore();
 
 const selectedWH = ref(wormholes[0]);
+const displayKg = ref(false);
 </script>
 
 <template>
@@ -17,8 +18,12 @@ const selectedWH = ref(wormholes[0]);
         {{ wh.type }}
       </option>
     </select>
-    <!-- interface to add ships w/ buttons to add jumps -->
+    <!-- interface to add ships w/ buttons to add jumps, and color select? -->
+    <div class="col-span-full">
+      {{ JSON.stringify(ships) }}
+    </div>
     <!-- interface to select fast/safe rolling -->
+    <!-- interface to select kg/metric tons -->
     <h4>Plan</h4>
     <div class="wh-bar">
       <template v-for="ship in ships">
