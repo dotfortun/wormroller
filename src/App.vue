@@ -4,7 +4,7 @@ import { wormholeStore } from "./stores/wormholes";
 import { solverStore } from "./stores/solver";
 
 const { wormholes } = wormholeStore();
-const { currMassKg, ships, solver } = solverStore();
+const { currMassKg, ships, jumps, solver } = solverStore();
 
 const selectedWH = ref(wormholes[0]);
 const displayKg = ref(false);

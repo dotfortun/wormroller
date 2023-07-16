@@ -9,6 +9,7 @@ import { ref, computed } from 'vue';
 
 export const solverStore = defineStore('solver', () => {
   const currMassKg = ref(0);
+
   const ships = ref({
     praxis_a: {
       cold: 174_000_000,
@@ -17,9 +18,20 @@ export const solverStore = defineStore('solver', () => {
     },
   })
 
+  const jumps = ref([
+    {
+      ships: "praxis_a",
+      isHot: true,
+    },
+    {
+      ships: "praxis_a",
+      isHot: false,
+    },
+  ])
+
   const solver = (currentMass, medMassKg, origMassKg) => {
     // This needs to solve the mass problem.
   }
 
-  return { currMassKg, ships, solver }
+  return { currMassKg, ships, jumps, solver }
 })
