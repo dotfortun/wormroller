@@ -5,19 +5,11 @@ import { ref, watch } from "vue";
 import { useSolverStore } from "./stores/solver";
 
 const store = useSolverStore();
-const {
-  currMassKg,
-  selectedWH,
-  wormholes,
-  ships,
-  jumps,
-  allJumpsMass,
-  solver,
-} = store;
+const { currMassKg, selectedWH, wormholes, ships, jumps, solver } = store;
 
 const displayTons = ref(true);
 const rollSafe = ref(true);
-const useEmoji = ref(false);
+// const useEmoji = ref(false);
 
 const displayMass = (value) => {
   return (value / (displayTons.value ? 1000 : 1)).toLocaleString();

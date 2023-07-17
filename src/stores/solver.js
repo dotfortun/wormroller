@@ -35,38 +35,26 @@ export const useSolverStore = defineStore('solver', () => {
 
   const jumps = ref([
     {
-      ship: "praxis_a",
+      ship: "praxis",
       jumpState: ["hot", "hot"],
       mass: 274_000_000 * 2
     },
     {
-      ship: "praxis_a",
+      ship: "praxis",
       jumpState: ["hot", "hot"],
       mass: 274_000_000 * 2
     },
     {
-      ship: "praxis_a",
+      ship: "praxis",
       jumpState: ["hot", "hot"],
       mass: 274_000_000 * 2
     },
     {
-      ship: "mega_a",
+      ship: "mega",
       jumpState: ["cold", "hot"],
       mass: 294_000_000 + 196_000_000
     },
   ])
-
-  const allJumpsMass = computed(() => {
-    return jumps.value.reduce((a, jump) => {
-      let shipMass = 0
-      if (jump.isHot) {
-        shipMass = ships.value.filter((i) => i.name === jump.ship)[0].hot;
-      } else {
-        shipMass = ships.value.filter((i) => i.name === jump.ship)[0].cold
-      }
-      return a + shipMass;
-    }, 0)
-  })
 
   const totalJumpMass = computed(() => jumps.value.reduce((prevTotal, jump) => {
     return prevTotal + jump.mass
@@ -83,5 +71,5 @@ export const useSolverStore = defineStore('solver', () => {
     }
   }
 
-  return { currMassKg, selectedWH, ships, wormholes, jumps, allJumpsMass, solver }
+  return { currMassKg, selectedWH, ships, wormholes, jumps, solver }
 })
