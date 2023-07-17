@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Ubuntu+Mono&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Ubuntu+Mono&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -14,4 +14,14 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+}
+
+h1 {
+  @apply mb-4 font-bold leading-none tracking-normal;
+  @apply text-4xl md:text-5xl lg:text-6xl;
+  @apply text-gray-900 dark:text-white;
+}
+
+h2 {
+  @apply text-4xl font-semibold dark:text-white;
 }
