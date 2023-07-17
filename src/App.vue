@@ -2,61 +2,74 @@
 import Toggle from "./components/Toggle.vue";
 
 import { ref, watch } from "vue";
-import { wormholeStore } from "./stores/wormholes";
-import { solverStore } from "./stores/solver";
+import { useSolverStore } from "./stores/solver";
 
-const { wormholes } = wormholeStore();
-const { currMassKg, ships, jumps, allJumpsMass, solver } = solverStore();
+const store = useSolverStore();
+const {
+  currMassKg,
+  selectedWH,
+  wormholes,
+  ships,
+  jumps,
+  allJumpsMass,
+  solver,
+} = store;
 
-const selectedWH = ref(wormholes[12]);
 const displayTons = ref(true);
 const rollSafe = ref(true);
+const useEmoji = ref(false);
 
 const displayMass = (value) => {
   return (value / (displayTons.value ? 1000 : 1)).toLocaleString();
 };
 
-const getJumpMassPercent = (ships, jump) => {
-  const shipMass = jump.isHot ? ships[jump.ship].hot : ships[jump.ship].cold;
-  return (shipMass / selectedWH.value.totalMass) * 100;
+const getJumpMassPercent = (jump) => {
+  return (jump.mass / store.selectedWH.totalMass) * 100;
 };
+
+console.log(
+  jumps.reduce((prevTotal, jump) => {
+    return prevTotal + jump.mass;
+  }, 0)
+);
 </script>
 
 <template>
   <main>
     <div class="wh-info">
-      <h2 class="col-span-full">{{ selectedWH.type }}</h2>
+      <h2 class="col-span-full">{{ store.selectedWH.type }}</h2>
       <div class="col-span-all row-span-1">
         <span class="mass-label">Total Mass:</span>{{ " " }}
         <span>
-          {{ displayMass(selectedWH.totalMass) }}
+          {{ displayMass(store.selectedWH.totalMass) }}
           {{ displayTons ? "tons" : "kg" }}
         </span>
       </div>
       <div class="col-span-all row-span-1">
         <span class="mass-label">Jump Mass:</span>{{ " " }}
         <span>
-          {{ displayMass(selectedWH.jumpMass) }}
+          {{ displayMass(store.selectedWH.jumpMass) }}
           {{ displayTons ? "tons" : "kg" }}
         </span>
       </div>
       <div class="col-span-all row-span-1">
-        <span class="mass-label">Remaining Mass:</span>{{ " " }}
+        <span class="mass-label">Remaining:</span>{{ " " }}
         <span>
-          {{ displayMass(selectedWH.totalMass * 0.9 - allJumpsMass) }} -
-          {{ displayMass(selectedWH.totalMass * 1.1 - allJumpsMass) }}
+          {{ displayMass(store.currMassKg.min) }} -
+          {{ displayMass(store.currMassKg.max) }}
           {{ displayTons ? "tons" : "kg" }}
         </span>
       </div>
     </div>
     <div class="controls">
-      <select v-model="selectedWH">
+      <select v-model="store.selectedWH">
         <option v-for="wh in wormholes" :key="wh.type" :value="wh">
           {{ wh.type }}
         </option>
       </select>
       <Toggle label-left="kg" label-right="tons" v-model="displayTons" />
       <Toggle label-left="fast" label-right="safe" v-model="rollSafe" />
+      <!-- <Toggle label-left="no" label-right="✅" v-model="useEmoji" /> -->
     </div>
     <!-- interface to add ships w/ buttons to add jumps, and color select? -->
     <div class="col-span-full">
@@ -65,26 +78,18 @@ const getJumpMassPercent = (ships, jump) => {
     <!-- interface to select fast/safe rolling -->
     <hr class="col-span-full" />
     <h4>Plan</h4>
-    <div class="wh-bar">
-      <template v-for="jump in jumps">
-        <div
-          class="ship-bar"
-          :style="`background-color: ${
-            ships[jump.ship].color
-          }; width: ${getJumpMassPercent(ships, jump)}%`"
-        ></div>
-      </template>
-    </div>
+    <div class="wh-bar"></div>
     <h4>Jumps</h4>
     <div class="wh-bar">
-      <template v-for="ship in ships">
-        <div
-          class="ship-bar"
-          :style="`background-color: ${ship.color}; width: calc(${
-            (ship.cold / selectedWH.totalMass) * 100
-          }% - 2px)`"
-        ></div>
-      </template>
+      <div
+        v-for="jump in jumps"
+        class="ship-bar"
+        :style="`background-color: ${
+          ships.filter((i) => i.name === jump.ship)[0].color
+        }; width: ${getJumpMassPercent(jump)}%`"
+      >
+        {{ jump.ship }} ({{ jump.jumpState.join(", ") }})
+      </div>
     </div>
   </main>
 </template>
@@ -111,10 +116,17 @@ select {
 }
 
 .wh-bar {
-  @apply w-full flex justify-start bg-gray-200 h-2.5 dark:bg-gray-700 col-span-full;
+  @apply w-full rounded-lg flex justify-start bg-gray-200 h-8 dark:bg-gray-700 col-span-full;
 }
 
 .ship-bar {
-  @apply h-2.5 border-r-white border-solid border-r-2;
+  @apply h-8 p-1 border-r-white border-solid border-r-2;
+}
+.ship-bar:first-child {
+  @apply rounded-l-lg;
+}
+
+.ship-bar:last-child {
+  @apply rounded-r-lg border-r-0;
 }
 </style>

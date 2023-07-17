@@ -1,37 +1,87 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue';
 
-/*
-  GUI
-    - Way to add ships (each has a name, a hot mass, a cold mass.)
-    - Way to select a wormhole (https://wiki.eveuniversity.org/Wormhole_attributes)
- */
+import { wormholes } from "../wormholes"
 
-export const solverStore = defineStore('solver', () => {
-  const currMassKg = ref(0);
+export const useSolverStore = defineStore('solver', () => {
 
-  const ships = ref({
-    praxis_a: {
+  const states = {
+    cold_cold: ["cold", "cold"],
+    cold_hot: ["cold", "hot"],
+    hot_hot: ["hot", "hot"],
+  }
+
+  const selectedWH = ref(wormholes[12]);
+
+  const currMassKg = computed(() => ({
+    med: (selectedWH.value.totalMass - totalJumpMass.value),
+    min: ((selectedWH.value.totalMass * 0.9) - totalJumpMass.value),
+    max: ((selectedWH.value.totalMass * 1.1) - totalJumpMass.value),
+  }));
+
+  const ships = ref([
+    {
+      name: "praxis_a",
       cold: 174_000_000,
-      hot: 174_000_000,
-      color: "#ffffff",
-    },
-  })
-
-  const jumps = ref([
-    {
-      ships: "praxis_a",
-      isHot: true,
-    },
-    {
-      ships: "praxis_a",
-      isHot: false,
+      hot: 274_000_000,
+      color: "#09c",
+    }, {
+      name: "mega_a",
+      cold: 196_000_000,
+      hot: 296_000_000,
+      color: "rgb(65, 108, 79)",
     },
   ])
 
-  const solver = (currentMass, medMassKg, origMassKg) => {
-    // This needs to solve the mass problem.
+  const jumps = ref([
+    {
+      ship: "praxis_a",
+      jumpState: ["hot", "hot"],
+      mass: 274_000_000 * 2
+    },
+    {
+      ship: "praxis_a",
+      jumpState: ["hot", "hot"],
+      mass: 274_000_000 * 2
+    },
+    {
+      ship: "praxis_a",
+      jumpState: ["hot", "hot"],
+      mass: 274_000_000 * 2
+    },
+    {
+      ship: "mega_a",
+      jumpState: ["cold", "hot"],
+      mass: 294_000_000 + 196_000_000
+    },
+  ])
+
+  const allJumpsMass = computed(() => {
+    return jumps.value.reduce((a, jump) => {
+      let shipMass = 0
+      if (jump.isHot) {
+        shipMass = ships.value.filter((i) => i.name === jump.ship)[0].hot;
+      } else {
+        shipMass = ships.value.filter((i) => i.name === jump.ship)[0].cold
+      }
+      return a + shipMass;
+    }, 0)
+  })
+
+  const totalJumpMass = computed(() => jumps.value.reduce((prevTotal, jump) => {
+    return prevTotal + jump.mass
+  }, 0));
+
+  const solver = (whInfo, isSafe = false, jumps = []) => {
+    if (isSafe) {
+      for (let ship of ships.value) {
+        if (currMass.min < ship.cold) {
+
+        }
+      }
+      return
+    }
   }
 
-  return { currMassKg, ships, jumps, solver }
+  return { currMassKg, selectedWH, ships, wormholes, jumps, allJumpsMass, solver }
 })
