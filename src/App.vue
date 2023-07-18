@@ -63,7 +63,7 @@ const displayMass = (value) => {
     <!-- interface to select fast/safe rolling -->
     <hr class="col-span-full" />
     <h3>Plan</h3>
-    <div class="wh-bar h-8">
+    <div class="wh-bar h-10">
       <div
         v-for="jump in store.plan"
         class="ship-bar"
@@ -72,9 +72,8 @@ const displayMass = (value) => {
         {{ jump.ship }} ({{ jump.jumpState.join("/") }})
       </div>
     </div>
-    <div class="wh-bar h-2"></div>
-    <h3>Completed Jumps</h3>
-    <div class="wh-bar h-8">
+    <!-- <h3>Completed Jumps</h3>
+    <div class="wh-bar h-10">
       <div
         v-for="jump in store.jumps"
         class="ship-bar"
@@ -82,8 +81,8 @@ const displayMass = (value) => {
       >
         {{ jump.ship }} ({{ jump.jumpState.join("/") }})
       </div>
-    </div>
-    <div class="wh-bar h-2"></div>
+    </div> -->
+    <!-- <div class="wh-bar h-2"></div> -->
   </main>
 </template>
 
@@ -117,11 +116,11 @@ select {
 }
 
 .wh-bar {
-  @apply w-full overflow-x-hidden rounded-lg flex flex-row col-span-full bg-gradient-to-r from-gray-700 from-9/11 via-10/11 via-yellow-500 to-red-600;
+  @apply w-full overflow-hidden items-center rounded-lg flex flex-row col-span-full bg-gradient-to-r from-gray-700 from-9/11 via-10/11 via-yellow-500 to-red-600;
 }
 
 .ship-bar {
-  @apply h-8 p-1 self-start flex-shrink-0 flex-grow-0 text-center border-r-slate-400 border-solid border-r-2 overflow-hidden hover:overflow-visible hover:isolate;
+  @apply h-8 p-1 flex-shrink-0 flex-grow-0 text-center border-r-slate-400 border-solid border-r-2 overflow-hidden hover:isolate;
 }
 .ship-bar:first-child {
   @apply rounded-l-lg;
