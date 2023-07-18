@@ -32,12 +32,12 @@ export const useSolverStore = defineStore('solver', () => {
       hot: 274_000_000,
       color: "#0099cc",
     },
-    // {
-    //   name: "praxis 2",
-    //   cold: 174_000_000,
-    //   hot: 274_000_000,
-    //   color: "#cc9900",
-    // },
+    {
+      name: "praxis 2",
+      cold: 174_000_000,
+      hot: 274_000_000,
+      color: "#0099cc",
+    },
     {
       name: "mega",
       cold: 196_000_000,
@@ -64,8 +64,9 @@ export const useSolverStore = defineStore('solver', () => {
   }, 0)
 
   const getJumpStyles = (jump) => {
+    const ship = ships.value.filter((i) => i.name === jump.ship)[0];
     return {
-      background: ships.value.filter((i) => i.name === jump.ship)[0].color,
+      background: ship ? ship.color : "#f33",
       width: `${(jump.mass / (selectedWH.value.totalMass * 1.1)) * 100}%`,
     };
   };
@@ -74,25 +75,21 @@ export const useSolverStore = defineStore('solver', () => {
     plan.value = [];
     let limit = 0;
     while (planMassKg.value.min > 0) {
-      if (planMassKg.value.med > 0) {
-        plan.value.push(...ships.value.map(s => ({
-          ship: s.name,
-          jumpState: ["hot", "hot"],
-          mass: s.hot + s.hot
-        })));
+      for (let s of ships.value) {
+        if (planMassKg.value.med > (s.hot + s.hot)) {
+          plan.value.push({
+            ship: s.name,
+            jumpState: ["hot", "hot"],
+            mass: s.hot + s.hot
+          });
+        } else if (planMassKg.value.med > s.cold) {
+          plan.value.push({
+            ship: s.name,
+            jumpState: ["cold", "hot"],
+            mass: s.cold + s.hot
+          });
+        }
       }
-      limit++
-      if (limit > 10) {
-        limit = 0;
-        break;
-      }
-    }
-    while (planMassKg.value.med > 0) {
-      plan.value.push(...ships.value.map(s => ({
-        ship: s.name,
-        jumpState: ["cold", "hot"],
-        mass: s.cold + s.hot
-      })));
       limit++
       if (limit > 10) {
         limit = 0;
@@ -100,6 +97,11 @@ export const useSolverStore = defineStore('solver', () => {
       }
     }
     jumps.value = plan.value;
+  }
+
+  const clear = () => {
+    jumps.value = [];
+    plan.value = [];
   }
 
   return {
@@ -110,6 +112,7 @@ export const useSolverStore = defineStore('solver', () => {
     jumps,
     plan,
     solver,
+    clear,
     getJumpStyles
   }
 })

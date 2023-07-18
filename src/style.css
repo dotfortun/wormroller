@@ -16,6 +16,10 @@
   -webkit-text-size-adjust: 100%;
 }
 
+main {
+  @apply grid grid-cols-2 gap-1 my-5 mx-auto w-8/12 md:max-w-full;
+}
+
 h1 {
   @apply mb-4 font-bold leading-none tracking-normal;
   @apply text-4xl md:text-5xl lg:text-6xl;
@@ -23,5 +27,17 @@ h1 {
 }
 
 h2 {
-  @apply text-4xl font-semibold dark:text-white;
+  @apply text-3xl font-semibold dark:text-white;
+}
+
+h3 {
+  @apply text-2xl font-medium dark:text-white;
+}
+
+h4 {
+  @apply text-xl;
+}
+
+select {
+  @apply bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white text-xl dark:focus:ring-blue-500 dark:focus:border-blue-500;
 }
