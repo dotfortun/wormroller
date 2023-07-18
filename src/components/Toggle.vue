@@ -12,7 +12,7 @@ const uid = computed(() => getCurrentInstance().uid);
 </script>
 
 <template>
-  <div class="flex items-center justify-center w-full mb-12">
+  <div class="flex items-center justify-center h-min w-full mb-12">
     <label :for="uid" class="flex items-center cursor-pointer">
       <div class="mr-3 font-medium">{{ labelLeft }}</div>
       <div class="relative">

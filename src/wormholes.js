@@ -61,8 +61,8 @@ export const wormholes = [
   },
   {
     "type": "C247",
-    "totalMass": 2000000000,
-    "jumpMass": 375000000
+    "totalMass": 2_000_000_000,
+    "jumpMass": 375_000_000
   },
   {
     "type": "C248",

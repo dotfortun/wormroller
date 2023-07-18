@@ -19,14 +19,27 @@ export const useSolverStore = defineStore('solver', () => {
     max: ((selectedWH.value.totalMass * 1.1) - totalJumpMass.value),
   }));
 
+  const planMassKg = computed(() => ({
+    med: (selectedWH.value.totalMass - totalPlanMass.value),
+    min: ((selectedWH.value.totalMass * 0.9) - totalPlanMass.value),
+    max: ((selectedWH.value.totalMass * 1.1) - totalPlanMass.value),
+  }));
+
   const ships = ref([
     {
-      name: "praxis_a",
+      name: "praxis",
       cold: 174_000_000,
       hot: 274_000_000,
-      color: "#09c",
-    }, {
-      name: "mega_a",
+      color: "#0099cc",
+    },
+    // {
+    //   name: "praxis 2",
+    //   cold: 174_000_000,
+    //   hot: 274_000_000,
+    //   color: "#cc9900",
+    // },
+    {
+      name: "mega",
       cold: 196_000_000,
       hot: 296_000_000,
       color: "rgb(65, 108, 79)",
@@ -34,42 +47,69 @@ export const useSolverStore = defineStore('solver', () => {
   ])
 
   const jumps = ref([
-    {
-      ship: "praxis",
-      jumpState: ["hot", "hot"],
-      mass: 274_000_000 * 2
-    },
-    {
-      ship: "praxis",
-      jumpState: ["hot", "hot"],
-      mass: 274_000_000 * 2
-    },
-    {
-      ship: "praxis",
-      jumpState: ["hot", "hot"],
-      mass: 274_000_000 * 2
-    },
-    {
-      ship: "mega",
-      jumpState: ["cold", "hot"],
-      mass: 294_000_000 + 196_000_000
-    },
   ])
+
+  const plan = ref([]);
 
   const totalJumpMass = computed(() => jumps.value.reduce((prevTotal, jump) => {
     return prevTotal + jump.mass
   }, 0));
 
-  const solver = (whInfo, isSafe = false, jumps = []) => {
-    if (isSafe) {
-      for (let ship of ships.value) {
-        if (currMass.min < ship.cold) {
+  const totalPlanMass = computed(() => plan.value.reduce((prevTotal, jump) => {
+    return prevTotal + jump.mass
+  }, 0));
 
-        }
+  const totalShipMass = (isHot = true) => ships.value.reduce((prevTotal, ship) => {
+    return prevTotal + ship[isHot ? "hot" : "cold"]
+  }, 0)
+
+  const getJumpStyles = (jump) => {
+    return {
+      background: ships.value.filter((i) => i.name === jump.ship)[0].color,
+      width: `${(jump.mass / (selectedWH.value.totalMass * 1.1)) * 100}%`,
+    };
+  };
+
+  const solver = (fast = false) => {
+    plan.value = [];
+    let limit = 0;
+    while (planMassKg.value.min > 0) {
+      if (planMassKg.value.med > 0) {
+        plan.value.push(...ships.value.map(s => ({
+          ship: s.name,
+          jumpState: ["hot", "hot"],
+          mass: s.hot + s.hot
+        })));
       }
-      return
+      limit++
+      if (limit > 10) {
+        limit = 0;
+        break;
+      }
     }
+    while (planMassKg.value.med > 0) {
+      plan.value.push(...ships.value.map(s => ({
+        ship: s.name,
+        jumpState: ["cold", "hot"],
+        mass: s.cold + s.hot
+      })));
+      limit++
+      if (limit > 10) {
+        limit = 0;
+        break;
+      }
+    }
+    jumps.value = plan.value;
   }
 
-  return { currMassKg, selectedWH, ships, wormholes, jumps, solver }
+  return {
+    currMassKg,
+    selectedWH,
+    ships,
+    wormholes,
+    jumps,
+    plan,
+    solver,
+    getJumpStyles
+  }
 })
