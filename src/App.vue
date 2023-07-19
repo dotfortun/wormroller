@@ -44,18 +44,48 @@ const displayMass = (value) => {
         </span>
       </div>
     </div>
-    <div class="controls">
+    <div>
       <select v-model="store.selectedWH">
         <option v-for="wh in wormholes" :key="wh.type" :value="wh">
           {{ wh.type }}
         </option>
       </select>
-      <div class="buttons">
-        <button @click="() => solver(rollFast)">Solve</button>
-        <button class="clear" @click="() => clear()">Clear</button>
+      <div class="controls">
+        <button
+          class="w-max"
+          @click="
+            () => {
+              ships.push({
+                id: ships.length,
+                name: 'roller',
+                cold: 174_000_000,
+                hot: 274_000_000,
+                color: {
+                  r: Math.floor(Math.random() * 200),
+                  g: Math.floor(Math.random() * 200),
+                  b: Math.floor(Math.random() * 200),
+                },
+              });
+              solver(rollFast);
+            }
+          "
+        >
+          Add Ship
+        </button>
+        <button
+          class="clear w-max"
+          @click="
+            () => {
+              ships = [];
+              clear();
+            }
+          "
+        >
+          Clear Ships
+        </button>
+        <Toggle label-left="kg" label-right="tons" v-model="displayTons" />
+        <Toggle label-left="safe" label-right="fast" v-model="rollFast" />
       </div>
-      <Toggle label-left="kg" label-right="tons" v-model="displayTons" />
-      <Toggle label-left="safe" label-right="fast" v-model="rollFast" />
     </div>
     <!-- interface to add ships w/ buttons to add jumps, and color select? -->
     <div class="col-span-full my-2">
@@ -81,7 +111,24 @@ const displayMass = (value) => {
         :ship="ship"
         :key="ship.id"
         :use-tons="displayTons"
-        @change:ship="(ev) => ships.splice(idx, 1, ev)"
+        @change:ship="
+          (ev) => {
+            ships.splice(idx, 1, ev);
+            solver(rollFast);
+          }
+        "
+        @delete:ship="
+          () => {
+            ships.splice(idx, 1);
+            solver(rollFast);
+          }
+        "
+        @copy:ship="
+          () => {
+            ships.push(Object.assign({}, ships[idx]));
+            solver(rollFast);
+          }
+        "
       />
     </div>
   </main>
@@ -93,19 +140,7 @@ select {
 }
 
 .controls {
-  @apply self-start grid grid-cols-2 gap-4 row-span-1 justify-around;
-}
-
-.buttons {
-  @apply flex-1 flex-row w-full;
-}
-
-.buttons button {
-  @apply mx-1 bg-blue-500 hover:bg-blue-400 text-white font-bold py-1 px-2 border-b-2 border-blue-700 hover:border-blue-500 rounded col-span-1 place-self-center w-min;
-}
-
-.buttons button.clear {
-  @apply bg-red-700 hover:bg-red-500 border-red-800 hover:border-red-600;
+  @apply flex flex-row content-center justify-between gap-2 mt-2;
 }
 
 .mass-label {
@@ -113,7 +148,7 @@ select {
 }
 
 .wh-info {
-  @apply w-full grid-cols-2;
+  @apply w-full;
 }
 
 .wh-bar {

@@ -41,3 +41,11 @@ h4 {
 select {
   @apply bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white text-xl dark:focus:ring-blue-500 dark:focus:border-blue-500;
 }
+
+button {
+  @apply mx-1 text-sm bg-blue-500 hover:bg-blue-400 text-white font-bold py-1 px-2 border-b-4 border-blue-700 hover:border-blue-500 rounded col-span-1 place-self-center w-min;
+}
+
+.clear {
+  @apply bg-red-700 hover:bg-red-500 border-red-800 hover:border-red-600;
+}

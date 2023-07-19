@@ -1,62 +1,69 @@
 <script setup>
-const { modelValue = {} } = defineProps({
-  modelValue: Object,
+const { color = { r: 0, g: 0, b: 0 } } = defineProps({
+  color: Object,
 });
-defineEmits(["update:modelValue"]);
+defineEmits(["change:color"]);
 </script>
 
 <template>
   <div>
-    {{
-      `#${[
-        modelValue.r.toString(16).padStart(2, "0").toUpperCase(),
-        modelValue.g.toString(16).padStart(2, "0").toUpperCase(),
-        modelValue.b.toString(16).padStart(2, "0").toUpperCase(),
-      ].join("")}`
-    }}
-    <input
-      type="range"
-      :min="0"
-      :max="255"
-      :step="1"
-      :value="modelValue.r"
-      @input="
-        $emit('update:modelValue', {
-          r: parseInt($event.target.value),
-          g: modelValue.g,
-          b: modelValue.b,
-        })
-      "
-    />
-    <input
-      type="range"
-      :min="0"
-      :max="255"
-      :step="1"
-      :value="modelValue.g"
-      @input="
-        $emit('update:modelValue', {
-          r: modelValue.r,
-          g: parseInt($event.target.value),
-          b: modelValue.b,
-        })
-      "
-    />
-    <input
-      type="range"
-      :min="0"
-      :max="255"
-      :step="1"
-      :value="modelValue.b"
-      @input="
-        $emit('update:modelValue', {
-          r: modelValue.r,
-          g: modelValue.g,
-          b: parseInt($event.target.value),
-        })
-      "
-    />
+    {{ `rgb(${Object.values(color).join(", ")})` }}
+    <label>
+      <input
+        type="range"
+        :min="0"
+        :max="255"
+        :step="1"
+        :value="color.r"
+        @change="
+          $emit('change:color', {
+            r: $event.target.valueAsNumber,
+            g: color.g,
+            b: color.b,
+          })
+        "
+      />
+      red
+    </label>
+    <label>
+      <input
+        type="range"
+        :min="0"
+        :max="255"
+        :step="1"
+        :value="color.g"
+        @change="
+          $emit('change:color', {
+            r: color.r,
+            g: $event.target.valueAsNumber,
+            b: color.b,
+          })
+        "
+      />
+      green
+    </label>
+    <label>
+      <input
+        type="range"
+        :min="0"
+        :max="255"
+        :step="1"
+        :value="color.b"
+        @change="
+          $emit('change:color', {
+            r: color.r,
+            g: color.g,
+            b: $event.target.valueAsNumber,
+          })
+        "
+      />
+      blue
+    </label>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+input {
+  @apply w-3/4;
+}
+</style>

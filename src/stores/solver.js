@@ -20,27 +20,7 @@ export const useSolverStore = defineStore('solver', () => {
   }));
 
   const ships = ref([
-    {
-      id: 0,
-      name: "praxis",
-      cold: 174_000_000,
-      hot: 274_000_000,
-      color: "#0099cc",
-    },
-    {
-      id: 1,
-      name: "praxis 2",
-      cold: 174_000_000,
-      hot: 274_000_000,
-      color: "#0099cc",
-    },
-    {
-      id: 2,
-      name: "mega",
-      cold: 196_000_000,
-      hot: 296_000_000,
-      color: "rgb(65, 108, 79)",
-    },
+
   ])
 
   const jumps = ref([
@@ -56,19 +36,15 @@ export const useSolverStore = defineStore('solver', () => {
     return prevTotal + jump.mass
   }, 0));
 
-  const totalShipMass = (isHot = true) => ships.value.reduce((prevTotal, ship) => {
-    return prevTotal + ship[isHot ? "hot" : "cold"]
-  }, 0)
-
-  const getJumpStyles = (jump) => {
-    const ship = ships.value.filter((i) => i.name === jump.ship)[0];
+  function getJumpStyles(jump) {
+    const ship = ships.value.filter((i) => i.id === jump.shipId)[0];
     return {
-      background: ship ? ship.color : "#f33",
+      background: ship ? `rgb(${Object.values(ship.color).join(',')})` : `rgb(125, 125, 125)`,
       width: `${(jump.mass / (selectedWH.value.totalMass * 1.1)) * 100}%`,
     };
-  };
+  }
 
-  const solver = (fast = false) => {
+  function solver(fast = false) {
     plan.value = [];
     let limit = 0;
     while (planMassKg.value.min > 0) {
@@ -77,11 +53,13 @@ export const useSolverStore = defineStore('solver', () => {
           plan.value.push(
             {
               ship: s.name,
+              shipId: s.id,
               jumpState: "hot",
               mass: s.hot
             },
             {
               ship: s.name,
+              shipId: s.id,
               jumpState: "hot",
               mass: s.hot
             }
@@ -90,18 +68,20 @@ export const useSolverStore = defineStore('solver', () => {
           plan.value.push(
             {
               ship: s.name,
+              shipId: s.id,
               jumpState: "cold",
               mass: s.cold
             },
             {
               ship: s.name,
+              shipId: s.id,
               jumpState: "hot",
               mass: s.hot
             }
           );
         }
       }
-      limit++
+      limit++;
       if (limit > 10) {
         limit = 0;
         break;
