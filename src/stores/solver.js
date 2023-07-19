@@ -5,12 +5,6 @@ import { wormholes } from "../wormholes"
 
 export const useSolverStore = defineStore('solver', () => {
 
-  const states = {
-    cold_cold: ["cold", "cold"],
-    cold_hot: ["cold", "hot"],
-    hot_hot: ["hot", "hot"],
-  }
-
   const selectedWH = ref(wormholes[12]);
 
   const currMassKg = computed(() => ({
@@ -27,18 +21,21 @@ export const useSolverStore = defineStore('solver', () => {
 
   const ships = ref([
     {
+      id: 0,
       name: "praxis",
       cold: 174_000_000,
       hot: 274_000_000,
       color: "#0099cc",
     },
     {
+      id: 1,
       name: "praxis 2",
       cold: 174_000_000,
       hot: 274_000_000,
       color: "#0099cc",
     },
     {
+      id: 2,
       name: "mega",
       cold: 196_000_000,
       hot: 296_000_000,
@@ -77,17 +74,31 @@ export const useSolverStore = defineStore('solver', () => {
     while (planMassKg.value.min > 0) {
       for (let s of ships.value) {
         if (planMassKg.value.med > (s.hot + s.hot)) {
-          plan.value.push({
-            ship: s.name,
-            jumpState: ["hot", "hot"],
-            mass: s.hot + s.hot
-          });
+          plan.value.push(
+            {
+              ship: s.name,
+              jumpState: "hot",
+              mass: s.hot
+            },
+            {
+              ship: s.name,
+              jumpState: "hot",
+              mass: s.hot
+            }
+          );
         } else if (planMassKg.value.med > s.cold) {
-          plan.value.push({
-            ship: s.name,
-            jumpState: ["cold", "hot"],
-            mass: s.cold + s.hot
-          });
+          plan.value.push(
+            {
+              ship: s.name,
+              jumpState: "cold",
+              mass: s.cold
+            },
+            {
+              ship: s.name,
+              jumpState: "hot",
+              mass: s.hot
+            }
+          );
         }
       }
       limit++

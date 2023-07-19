@@ -1,6 +1,6 @@
 <script setup>
 import Toggle from "./components/Toggle.vue";
-import ColorPicker from "./components/ColorPicker.vue";
+import Ship from "./components/Ship.vue";
 
 import { ref, watch } from "vue";
 import { useSolverStore } from "./stores/solver";
@@ -14,17 +14,10 @@ const rollFast = ref(true);
 const displayMass = (value) => {
   return (value / (displayTons.value ? 1000 : 1)).toLocaleString();
 };
-
-const color = ref({
-  r: 0,
-  g: 0,
-  b: 0,
-});
 </script>
 
 <template>
   <main>
-    <ColorPicker v-model="color" />
     <div class="wh-info">
       <h2 class="col-span-full">{{ store.selectedWH.type }}</h2>
       <div class="col-span-all row-span-1">
@@ -65,7 +58,7 @@ const color = ref({
       <Toggle label-left="safe" label-right="fast" v-model="rollFast" />
     </div>
     <!-- interface to add ships w/ buttons to add jumps, and color select? -->
-    <div class="col-span-full">
+    <div class="col-span-full my-2">
       <!-- {{ JSON.stringify(ships) }} -->
     </div>
     <!-- interface to select fast/safe rolling -->
@@ -77,20 +70,20 @@ const color = ref({
         class="ship-bar"
         :style="getJumpStyles(jump)"
       >
-        {{ jump.ship }} ({{ jump.jumpState.join("/") }})
+        {{ jump.ship }} ({{ jump.jumpState }})
       </div>
     </div>
-    <!-- <h3>Completed Jumps</h3>
-    <div class="wh-bar h-10">
-      <div
-        v-for="jump in store.jumps"
-        class="ship-bar"
-        :style="getJumpStyles(jump)"
-      >
-        {{ jump.ship }} ({{ jump.jumpState.join("/") }})
-      </div>
-    </div> -->
-    <!-- <div class="wh-bar h-2"></div> -->
+    <hr class="col-span-full my-2" />
+    <div class="ships-list">
+      <Ship
+        v-for="(ship, idx) in ships"
+        :idx="idx"
+        :ship="ship"
+        :key="ship.id"
+        :use-tons="displayTons"
+        @change:ship="(ev) => ships.splice(idx, 1, ev)"
+      />
+    </div>
   </main>
 </template>
 
@@ -136,5 +129,9 @@ select {
 
 .ship-bar:last-child {
   @apply rounded-r-lg border-r-0;
+}
+
+.ships-list {
+  @apply col-span-2;
 }
 </style>
