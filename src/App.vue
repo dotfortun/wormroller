@@ -6,8 +6,7 @@ import { ref, watch } from "vue";
 import { useSolverStore } from "./stores/solver";
 
 const store = useSolverStore();
-const { wormholes, ships, jumps, plan, solver, resetApp, getJumpStyles } =
-  store;
+const { wormholes, solver, getJumpStyles } = store;
 
 const displayTons = ref(true);
 const rollFast = ref(true);
@@ -52,7 +51,7 @@ watch(store.ships, () => {
       </div>
     </div>
     <div>
-      <select v-model="store.selectedWH">
+      <select v-model="store.selectedWH" @change="solver(rollFast)">
         <option v-for="wh in wormholes" :key="wh.type" :value="wh">
           {{ wh.type }}
         </option>
@@ -62,8 +61,8 @@ watch(store.ships, () => {
           class="w-max"
           @click="
             () => {
-              ships.push({
-                id: ships.length,
+              store.ships.push({
+                id: store.ships.length,
                 name: 'roller',
                 cold: 174_000_000,
                 hot: 274_000_000,
@@ -79,7 +78,15 @@ watch(store.ships, () => {
         >
           Add Ship
         </button>
-        <button class="clear w-max" @click="resetApp()">Clear Ships</button>
+        <button
+          class="clear w-max"
+          @click="
+            store.plan = [];
+            store.ships = [];
+          "
+        >
+          Clear Ships
+        </button>
         <Toggle label-left="kg" label-right="tons" v-model="displayTons" />
         <Toggle label-left="safe" label-right="fast" v-model="rollFast" />
       </div>
@@ -110,17 +117,17 @@ watch(store.ships, () => {
         :use-tons="displayTons"
         @change:ship="
           (ev) => {
-            ships.splice(idx, 1, ev);
+            store.ships.splice(idx, 1, ev);
           }
         "
         @delete:ship="
           () => {
-            ships.splice(idx, 1);
+            store.ships.splice(idx, 1);
           }
         "
         @copy:ship="
           () => {
-            ships.push(Object.assign({}, ships[idx]));
+            store.ships.push(Object.assign({}, ship));
           }
         "
       />
