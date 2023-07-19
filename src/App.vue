@@ -71,7 +71,7 @@ const color = ref({
     <!-- interface to select fast/safe rolling -->
     <hr class="col-span-full" />
     <h3>Plan</h3>
-    <div class="wh-bar h-10">
+    <div class="wh-bar h-12">
       <div
         v-for="jump in store.plan"
         class="ship-bar"
