@@ -1,5 +1,6 @@
 <script setup>
 import Toggle from "./components/Toggle.vue";
+import ColorPicker from "./components/ColorPicker.vue";
 
 import { ref, watch } from "vue";
 import { useSolverStore } from "./stores/solver";
@@ -13,10 +14,17 @@ const rollFast = ref(true);
 const displayMass = (value) => {
   return (value / (displayTons.value ? 1000 : 1)).toLocaleString();
 };
+
+const color = ref({
+  r: 0,
+  g: 0,
+  b: 0,
+});
 </script>
 
 <template>
   <main>
+    <ColorPicker v-model="color" />
     <div class="wh-info">
       <h2 class="col-span-full">{{ store.selectedWH.type }}</h2>
       <div class="col-span-all row-span-1">

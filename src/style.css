@@ -17,7 +17,7 @@
 }
 
 main {
-  @apply grid grid-cols-2 gap-1 my-5 mx-auto w-8/12 md:max-w-full;
+  @apply grid md:grid-cols-2 grid-cols-1 gap-1 my-5 mx-auto w-8/12 md:max-w-full;
 }
 
 h1 {
