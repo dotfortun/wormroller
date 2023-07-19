@@ -5,13 +5,7 @@ import { wormholes } from "../wormholes"
 
 export const useSolverStore = defineStore('solver', () => {
 
-  const selectedWH = ref(wormholes[12]);
-
-  const currMassKg = computed(() => ({
-    med: (selectedWH.value.totalMass - totalJumpMass.value),
-    min: ((selectedWH.value.totalMass * 0.9) - totalJumpMass.value),
-    max: ((selectedWH.value.totalMass * 1.1) - totalJumpMass.value),
-  }));
+  const selectedWH = ref(wormholes[0]);
 
   const planMassKg = computed(() => ({
     med: (selectedWH.value.totalMass - totalPlanMass.value),
@@ -23,14 +17,7 @@ export const useSolverStore = defineStore('solver', () => {
 
   ])
 
-  const jumps = ref([
-  ])
-
   const plan = ref([]);
-
-  const totalJumpMass = computed(() => jumps.value.reduce((prevTotal, jump) => {
-    return prevTotal + jump.mass
-  }, 0));
 
   const totalPlanMass = computed(() => plan.value.reduce((prevTotal, jump) => {
     return prevTotal + jump.mass
@@ -46,39 +33,44 @@ export const useSolverStore = defineStore('solver', () => {
 
   function solver(fast = false) {
     plan.value = [];
+    if (ships.value.length === 0) {
+      return
+    }
     let limit = 0;
     while (planMassKg.value.min > 0) {
       for (let s of ships.value) {
-        if (planMassKg.value.med > (s.hot + s.hot)) {
-          plan.value.push(
-            {
-              ship: s.name,
-              shipId: s.id,
-              jumpState: "hot",
-              mass: s.hot
-            },
-            {
-              ship: s.name,
-              shipId: s.id,
-              jumpState: "hot",
-              mass: s.hot
-            }
-          );
-        } else if (planMassKg.value.med > s.cold) {
-          plan.value.push(
-            {
-              ship: s.name,
-              shipId: s.id,
-              jumpState: "cold",
-              mass: s.cold
-            },
-            {
-              ship: s.name,
-              shipId: s.id,
-              jumpState: "hot",
-              mass: s.hot
-            }
-          );
+        if (s.cold < selectedWH.value.jumpMass) {
+          if (planMassKg.value.med > (s.hot + s.hot)) {
+            plan.value.push(
+              {
+                ship: s.name,
+                shipId: s.id,
+                jumpState: "hot",
+                mass: s.hot
+              },
+              {
+                ship: s.name,
+                shipId: s.id,
+                jumpState: "hot",
+                mass: s.hot
+              }
+            );
+          } else if (planMassKg.value.med > s.cold) {
+            plan.value.push(
+              {
+                ship: s.name,
+                shipId: s.id,
+                jumpState: "cold",
+                mass: s.cold
+              },
+              {
+                ship: s.name,
+                shipId: s.id,
+                jumpState: "hot",
+                mass: s.hot
+              }
+            );
+          }
         }
       }
       limit++;
@@ -87,23 +79,20 @@ export const useSolverStore = defineStore('solver', () => {
         break;
       }
     }
-    jumps.value = plan.value;
   }
 
-  const clear = () => {
-    jumps.value = [];
+  const resetApp = () => {
     plan.value = [];
   }
 
   return {
-    currMassKg,
+    planMassKg,
     selectedWH,
     ships,
     wormholes,
-    jumps,
     plan,
     solver,
-    clear,
+    resetApp,
     getJumpStyles
   }
 })

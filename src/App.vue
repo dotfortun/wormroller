@@ -6,7 +6,8 @@ import { ref, watch } from "vue";
 import { useSolverStore } from "./stores/solver";
 
 const store = useSolverStore();
-const { wormholes, ships, jumps, plan, solver, clear, getJumpStyles } = store;
+const { wormholes, ships, jumps, plan, solver, resetApp, getJumpStyles } =
+  store;
 
 const displayTons = ref(true);
 const rollFast = ref(true);
@@ -14,6 +15,12 @@ const rollFast = ref(true);
 const displayMass = (value) => {
   return (value / (displayTons.value ? 1000 : 1)).toLocaleString();
 };
+
+const randColor = () => Math.floor(Math.random() * 200);
+
+watch(store.ships, () => {
+  solver(rollFast);
+});
 </script>
 
 <template>
@@ -38,8 +45,8 @@ const displayMass = (value) => {
       <div class="col-span-all row-span-1">
         <span class="mass-label">Remaining:</span>{{ " " }}
         <span>
-          {{ displayMass(store.currMassKg.min) }} -
-          {{ displayMass(store.currMassKg.max) }}
+          {{ displayMass(store.planMassKg.min) }} -
+          {{ displayMass(store.planMassKg.max) }}
           {{ displayTons ? "tons" : "kg" }}
         </span>
       </div>
@@ -61,9 +68,9 @@ const displayMass = (value) => {
                 cold: 174_000_000,
                 hot: 274_000_000,
                 color: {
-                  r: Math.floor(Math.random() * 200),
-                  g: Math.floor(Math.random() * 200),
-                  b: Math.floor(Math.random() * 200),
+                  r: randColor(),
+                  g: randColor(),
+                  b: randColor(),
                 },
               });
               solver(rollFast);
@@ -72,17 +79,7 @@ const displayMass = (value) => {
         >
           Add Ship
         </button>
-        <button
-          class="clear w-max"
-          @click="
-            () => {
-              ships = [];
-              clear();
-            }
-          "
-        >
-          Clear Ships
-        </button>
+        <button class="clear w-max" @click="resetApp()">Clear Ships</button>
         <Toggle label-left="kg" label-right="tons" v-model="displayTons" />
         <Toggle label-left="safe" label-right="fast" v-model="rollFast" />
       </div>
@@ -106,7 +103,7 @@ const displayMass = (value) => {
     <hr class="col-span-full my-2" />
     <div class="ships-list">
       <Ship
-        v-for="(ship, idx) in ships"
+        v-for="(ship, idx) in store.ships"
         :idx="idx"
         :ship="ship"
         :key="ship.id"
@@ -114,19 +111,16 @@ const displayMass = (value) => {
         @change:ship="
           (ev) => {
             ships.splice(idx, 1, ev);
-            solver(rollFast);
           }
         "
         @delete:ship="
           () => {
             ships.splice(idx, 1);
-            solver(rollFast);
           }
         "
         @copy:ship="
           () => {
             ships.push(Object.assign({}, ships[idx]));
-            solver(rollFast);
           }
         "
       />
