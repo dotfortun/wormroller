@@ -71,11 +71,7 @@ const updateShipProperty = (key, val) => {
     </div>
     <ColorPicker
       :color="ship.color"
-      @change:color="
-        (color) => {
-          'change:ship', $emit(updateShipProperty('color', color));
-        }
-      "
+      @change:color="(ev) => $emit(updateShipProperty('color', ev))"
     />
     <div>
       <button
