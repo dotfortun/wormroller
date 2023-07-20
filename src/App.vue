@@ -19,8 +19,6 @@ const randomInt = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-const randColor = () => Math.floor(Math.random() * 100);
-
 watch(store.ships, () => {
   solver(rollFast);
 });
@@ -64,20 +62,18 @@ watch(store.ships, () => {
         <button
           class="w-max"
           @click="
-            () => {
-              store.ships.push({
-                id: store.ships.length,
-                name: 'roller',
-                cold: 174_000_000,
-                hot: 274_000_000,
-                color: {
-                  h: randomInt(0, 360),
-                  s: randomInt(42, 98),
-                  l: randomInt(40, 90),
-                },
-              });
-              solver(rollFast);
-            }
+            store.ships.push({
+              id: store.ships.length,
+              name: 'roller',
+              cold: 174_000_000,
+              hot: 274_000_000,
+              color: {
+                h: randomInt(0, 360),
+                s: randomInt(42, 98),
+                l: randomInt(40, 90),
+              },
+            });
+            solver(rollFast);
           "
         >
           Add Ship
@@ -85,8 +81,8 @@ watch(store.ships, () => {
         <button
           class="clear w-max"
           @click="
-            store.plan = [];
-            store.ships = [];
+            store.plan.splice(0, store.ships.length);
+            store.ships.splice(0, store.ships.length);
           "
         >
           Clear Ships
@@ -112,27 +108,16 @@ watch(store.ships, () => {
       </div>
     </div>
     <div class="ships-list">
+      <div class="warning-line"></div>
       <Ship
         v-for="(ship, idx) in store.ships"
         :idx="idx"
         :ship="ship"
         :key="ship.id"
         :use-tons="displayTons"
-        @change:ship="
-          (ev) => {
-            store.ships.splice(idx, 1, ev);
-          }
-        "
-        @delete:ship="
-          () => {
-            store.ships.splice(idx, 1);
-          }
-        "
-        @copy:ship="
-          () => {
-            store.ships.push(Object.assign({}, ship));
-          }
-        "
+        @change:ship="store.ships.splice(idx, 1, $event)"
+        @delete:ship="store.ships.splice(idx, 1)"
+        @copy:ship="store.ships.push(Object.assign({}, ship))"
       />
     </div>
   </main>
@@ -160,7 +145,7 @@ select {
 }
 
 .ship-bar {
-  @apply h-8 p-1 flex-shrink-0 flex-grow-0 text-center border-r-slate-400 border-solid border-r-2 overflow-hidden hover:isolate;
+  @apply relative h-8 p-1 flex-shrink-0 flex-grow-0 text-center border-r-slate-400 border-solid border-r-2 overflow-hidden hover:isolate;
 }
 .ship-bar:first-child {
   @apply rounded-l-lg;
@@ -172,5 +157,9 @@ select {
 
 .ships-list {
   @apply col-span-2 content-center;
+}
+
+.warning-line {
+  @apply absolute right-3/11 top-0 h-10 z-10 border-red-700 border-r-2;
 }
 </style>
