@@ -24,6 +24,7 @@ const updateShipProperty = (key, val) => {
 </script>
 
 <template>
+  <hr class="mt-1" />
   <div class="ship">
     <div class="ship-details">
       <input
@@ -75,7 +76,7 @@ const updateShipProperty = (key, val) => {
       </label>
     </div>
     <ColorPicker :ship-id="ship.shipId" :ship-idx="idx" />
-    <div>
+    <div class="buttons">
       <button
         class="rounded-full font-regular"
         @click="() => $emit('copy:ship')"
@@ -103,5 +104,9 @@ const updateShipProperty = (key, val) => {
 
 .ship-details input {
   @apply w-1/2;
+}
+
+.buttons {
+  @apply flex flex-auto justify-center;
 }
 </style>

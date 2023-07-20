@@ -15,7 +15,11 @@ const displayMass = (value) => {
   return (value / (displayTons.value ? 1000 : 1)).toLocaleString();
 };
 
-const randColor = () => Math.floor(Math.random() * 200);
+const randomInt = (min, max) => {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
+const randColor = () => Math.floor(Math.random() * 100);
 
 watch(store.ships, () => {
   solver(rollFast);
@@ -67,9 +71,9 @@ watch(store.ships, () => {
                 cold: 174_000_000,
                 hot: 274_000_000,
                 color: {
-                  r: randColor(),
-                  g: randColor(),
-                  b: randColor(),
+                  h: randomInt(0, 360),
+                  s: randomInt(42, 98),
+                  l: randomInt(40, 90),
                 },
               });
               solver(rollFast);
@@ -104,10 +108,9 @@ watch(store.ships, () => {
         class="ship-bar"
         :style="getJumpStyles(jump)"
       >
-        {{ jump.ship }} ({{ jump.jumpState }})
+        {{ jump.jumpState }}
       </div>
     </div>
-    <hr class="col-span-full my-2" />
     <div class="ships-list">
       <Ship
         v-for="(ship, idx) in store.ships"
@@ -168,6 +171,6 @@ select {
 }
 
 .ships-list {
-  @apply col-span-2;
+  @apply col-span-2 content-center;
 }
 </style>
