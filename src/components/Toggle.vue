@@ -2,7 +2,7 @@
 import { getCurrentInstance, computed } from "vue";
 
 const { modelValue, labelLeft, labelRight } = defineProps({
-  modelValue: Object,
+  modelValue: Boolean,
   labelLeft: String,
   labelRight: String,
 });

@@ -1,7 +1,12 @@
 <script setup>
 import ColorPicker from "./ColorPicker.vue";
 
-const { useTons = false, ship = {} } = defineProps({
+const {
+  useTons = false,
+  ship = {},
+  idx = 0,
+} = defineProps({
+  idx: Number,
   useTons: Boolean,
   ship: Object,
 });
@@ -69,10 +74,7 @@ const updateShipProperty = (key, val) => {
         {{ useTons ? "tons" : "kg" }}
       </label>
     </div>
-    <ColorPicker
-      :color="ship.color"
-      @change:color="(ev) => $emit(updateShipProperty('color', ev))"
-    />
+    <ColorPicker :ship-id="ship.shipId" :ship-idx="idx" />
     <div>
       <button
         class="rounded-full font-regular"

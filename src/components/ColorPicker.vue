@@ -1,27 +1,29 @@
 <script setup>
-const { color = { r: 0, g: 0, b: 0 } } = defineProps({
-  color: Object,
+import { ref } from "vue";
+import { useSolverStore } from "../stores/solver";
+
+const store = useSolverStore();
+
+const { shipId = 0, shipIdx = 0 } = defineProps({
+  shipId: Number,
+  shipIdx: Number,
 });
-defineEmits(["change:color"]);
+// defineEmits(["change:color"]);
+
+const colors = ref(store.ships[shipIdx].color);
 </script>
 
 <template>
   <div>
-    {{ `rgb(${Object.values(color).join(", ")})` }}
+    {{ `rgb(${Object.values(store.ships[shipIdx].color).join(", ")})` }}
     <label>
       <input
         type="range"
         :min="0"
         :max="255"
         :step="1"
-        :value="color.r"
-        @change="
-          $emit('change:color', {
-            r: $event.target.valueAsNumber,
-            g: color.g,
-            b: color.b,
-          })
-        "
+        :value="colors.r"
+        @change="store.ships[shipIdx].color.r = $event.target.valueAsNumber"
       />
       red
     </label>
@@ -31,14 +33,8 @@ defineEmits(["change:color"]);
         :min="0"
         :max="255"
         :step="1"
-        :value="color.g"
-        @change="
-          $emit('change:color', {
-            r: color.r,
-            g: $event.target.valueAsNumber,
-            b: color.b,
-          })
-        "
+        :value="colors.g"
+        @change="store.ships[shipIdx].color.g = $event.target.valueAsNumber"
       />
       green
     </label>
@@ -48,14 +44,8 @@ defineEmits(["change:color"]);
         :min="0"
         :max="255"
         :step="1"
-        :value="color.b"
-        @change="
-          $emit('change:color', {
-            r: color.r,
-            g: color.g,
-            b: $event.target.valueAsNumber,
-          })
-        "
+        :value="colors.b"
+        @change="store.ships[shipIdx].color.b = $event.target.valueAsNumber"
       />
       blue
     </label>
