@@ -11,12 +11,13 @@ export const useSolverStore = defineStore('solver', () => {
     med: (selectedWH.value.totalMass - totalPlanMass.value),
     min: ((selectedWH.value.totalMass * 0.9) - totalPlanMass.value),
     max: ((selectedWH.value.totalMass * 1.1) - totalPlanMass.value),
+    stages: {
+      reduced: ((selectedWH.value.totalMass * 0.5) - totalPlanMass.value),
+      crit: ((selectedWH.value.totalMass * 0.1) - totalPlanMass.value),
+    }
   }));
 
-  const ships = ref([
-
-  ])
-
+  const ships = ref([]);
   const plan = ref([]);
 
   const totalPlanMass = computed(() => plan.value.reduce((prevTotal, jump) => {

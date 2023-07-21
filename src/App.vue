@@ -1,15 +1,18 @@
 <script setup>
+import { ref, watch } from "vue";
+import draggable from "vuedraggable";
+
+import { useSolverStore } from "./stores/solver";
+
 import Toggle from "./components/Toggle.vue";
 import Ship from "./components/Ship.vue";
-
-import { ref, watch } from "vue";
-import { useSolverStore } from "./stores/solver";
 
 const store = useSolverStore();
 const { wormholes, solver, getJumpStyles } = store;
 
 const displayTons = ref(true);
 const rollFast = ref(true);
+const useText = ref(false);
 
 const displayMass = (value) => {
   return (value / (displayTons.value ? 1000 : 1)).toLocaleString();
@@ -31,7 +34,7 @@ watch(store.ships, () => {
       <div class="col-span-all row-span-1">
         <span class="mass-label">Total Mass:</span>{{ " " }}
         <span>
-          {{ displayMass(store.selectedWH.totalMass * 0.9) }} -
+          {{ displayMass(store.selectedWH.totalMass * 0.9) }} —
           {{ displayMass(store.selectedWH.totalMass * 1.1) }}
           {{ displayTons ? "tons" : "kg" }}
         </span>
@@ -46,7 +49,7 @@ watch(store.ships, () => {
       <div class="col-span-all row-span-1">
         <span class="mass-label">Remaining:</span>{{ " " }}
         <span>
-          {{ displayMass(store.planMassKg.min) }} -
+          {{ displayMass(store.planMassKg.min) }} —
           {{ displayMass(store.planMassKg.max) }}
           {{ displayTons ? "tons" : "kg" }}
         </span>
@@ -91,11 +94,6 @@ watch(store.ships, () => {
         <Toggle label-left="safe" label-right="fast" v-model="rollFast" />
       </div>
     </div>
-    <!-- interface to add ships w/ buttons to add jumps, and color select? -->
-    <div class="col-span-full my-2">
-      <!-- {{ JSON.stringify(ships) }} -->
-    </div>
-    <!-- interface to select fast/safe rolling -->
     <hr class="col-span-full" />
     <h3>Plan</h3>
     <div class="wh-bar h-12">
@@ -104,28 +102,71 @@ watch(store.ships, () => {
         class="ship-bar"
         :style="getJumpStyles(jump)"
       >
-        {{ jump.jumpState }}
+        <template v-if="useText">
+          {{ jump.jumpState }}
+        </template>
+        <template v-else>
+          <font-awesome-icon v-if="jump.jumpState === 'hot'" icon="fire" />
+          <font-awesome-icon v-else icon="snowflake" />
+        </template>
       </div>
     </div>
     <div class="ships-list">
-      <div class="warning-line"></div>
-      <Ship
-        v-for="(ship, idx) in store.ships"
-        :idx="idx"
-        :ship="ship"
-        :key="ship.id"
-        :use-tons="displayTons"
-        @change:ship="store.ships.splice(idx, 1, $event)"
-        @delete:ship="store.ships.splice(idx, 1)"
-        @copy:ship="store.ships.push(Object.assign({}, ship))"
-      />
+      <!-- <div class="warning-line"></div> -->
+      <draggable
+        v-model="store.ships"
+        item-key="id"
+        @end="solver(rollFast)"
+        handle=".handle"
+      >
+        <template #item="{ element: ship, index: idx }">
+          <Ship
+            :idx="idx"
+            :ship="ship"
+            :key="ship.id"
+            :use-tons="displayTons"
+            @change:ship="store.ships.splice(idx, 1, $event)"
+            @delete:ship="store.ships.splice(idx, 1)"
+            @copy:ship="store.ships.push(Object.assign({}, ship))"
+          />
+        </template>
+      </draggable>
     </div>
   </main>
+  <footer>
+    <div>
+      <p>
+        Created by <a href="https://github.com/dotfortun">dotfortun</a> and
+        <a href="https://github.com/israeldail">israeldail</a>.
+      </p>
+      <p>
+        <small>
+          ISK donations to Peter Dostoevsky will be turned into explosions
+          somehow.
+        </small>
+      </p>
+    </div>
+    <div>
+      <p>
+        <a href="https://github.com/dotfortun/wormroller/issues">
+          Found a bug? Tell us here!
+        </a>
+      </p>
+    </div>
+  </footer>
 </template>
 
 <style scoped>
 select {
   @apply col-span-1;
+}
+
+footer {
+  @apply flex flex-row content-center justify-between p-4 text-slate-400;
+}
+
+footer a {
+  @apply text-cyan-400 decoration-solid;
 }
 
 .controls {

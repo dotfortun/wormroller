@@ -24,8 +24,10 @@ const updateShipProperty = (key, val) => {
 </script>
 
 <template>
-  <hr class="mt-1" />
   <div class="ship">
+    <div class="handle">
+      <font-awesome-icon icon="arrows-up-down" />
+    </div>
     <div class="ship-details">
       <input
         type="text"
@@ -94,8 +96,13 @@ const updateShipProperty = (key, val) => {
 </template>
 
 <style scoped>
+.handle {
+  @apply h-full w-4 flex flex-col justify-center select-none;
+}
+
 .ship {
-  @apply mx-auto my-2 h-min grid grid-cols-3 gap-4 items-center;
+  @apply mx-auto my-2 h-min grid gap-4 items-center;
+  grid-template-columns: 2rem 1fr 1fr 1fr;
 }
 
 .ship-details {
