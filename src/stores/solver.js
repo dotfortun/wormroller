@@ -30,7 +30,8 @@ export const useSolverStore = defineStore('solver', () => {
 
     return {
       background: ship ? `hsl(${ship.color.h}, ${ship.color.s}%, ${ship.color.l}%)` : `hsl(180, 50%, 50%)`,
-      color: `hsl(0, 0%, ${Math.abs((99 - ship.color.l) % 100)}%)`,
+      // color: `hsl(0, 0%, ${Math.abs((99 - ship.color.l) % 100)}%)`,
+      // issue was with this line of code for some reason
       width: `${(jump.mass / (selectedWH.value.totalMass * 1.1)) * 100}%`,
     };
   }
