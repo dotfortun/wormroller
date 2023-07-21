@@ -12,7 +12,7 @@ const { wormholes, solver, getJumpStyles } = store;
 
 const displayTons = ref(true);
 const rollFast = ref(true);
-const useText = ref(false);
+const useText = ref(true);
 
 const displayMass = (value) => {
   return (value / (displayTons.value ? 1000 : 1)).toLocaleString();
@@ -62,36 +62,39 @@ watch(store.ships, () => {
         </option>
       </select>
       <div class="controls">
-        <button
-          class="w-max"
-          @click="
-            store.ships.push({
-              id: store.ships.length,
-              name: 'roller',
-              cold: 174_000_000,
-              hot: 274_000_000,
-              color: {
-                h: randomInt(0, 360),
-                s: randomInt(42, 98),
-                l: randomInt(40, 90),
-              },
-            });
-            solver(rollFast);
-          "
-        >
-          Add Ship
-        </button>
-        <button
-          class="clear w-max"
-          @click="
-            store.plan.splice(0, store.ships.length);
-            store.ships.splice(0, store.ships.length);
-          "
-        >
-          Clear Ships
-        </button>
+        <div class="col-span-full">
+          <button
+            class="w-max"
+            @click="
+              store.ships.push({
+                id: store.ships.length,
+                name: 'roller',
+                cold: 174_000_000,
+                hot: 274_000_000,
+                color: {
+                  h: randomInt(0, 360),
+                  s: randomInt(42, 98),
+                  l: randomInt(40, 90),
+                },
+              });
+              solver(rollFast);
+            "
+          >
+            Add Ship
+          </button>
+          <button
+            class="clear w-max"
+            @click="
+              store.plan.splice(0, store.ships.length);
+              store.ships.splice(0, store.ships.length);
+            "
+          >
+            Clear Ships
+          </button>
+        </div>
         <Toggle label-left="kg" label-right="tons" v-model="displayTons" />
         <Toggle label-left="safe" label-right="fast" v-model="rollFast" />
+        <Toggle label-left="icons" label-right="text" v-model="useText" />
       </div>
     </div>
     <hr class="col-span-full" />
@@ -170,7 +173,7 @@ footer a {
 }
 
 .controls {
-  @apply flex flex-row content-center justify-between gap-2 mt-2;
+  @apply grid grid-cols-2 content-center justify-between gap-2 mt-2;
 }
 
 .mass-label {
