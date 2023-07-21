@@ -86,7 +86,7 @@ watch(store.ships, () => {
             class="clear w-max"
             @click="
               store.plan.splice(0, store.ships.length);
-              store.ships.splice(0, store.ships.length);
+              store.ships.splice(0, store.plan.length);
             "
           >
             Clear Ships
@@ -120,13 +120,13 @@ watch(store.ships, () => {
         v-model="store.ships"
         item-key="id"
         @end="solver(rollFast)"
+        :on-remove="(ev) => console.log(ev)"
         handle=".handle"
       >
         <template #item="{ element: ship, index: idx }">
           <Ship
             :idx="idx"
             :ship="ship"
-            :key="ship.id"
             :use-tons="displayTons"
             @change:ship="store.ships.splice(idx, 1, $event)"
             @delete:ship="store.ships.splice(idx, 1)"

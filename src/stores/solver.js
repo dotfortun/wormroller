@@ -26,6 +26,8 @@ export const useSolverStore = defineStore('solver', () => {
 
   function getJumpStyles(jump) {
     const ship = ships.value.filter((i) => i.id === jump.shipId)[0];
+    console.log(ships.value, ship)
+
     return {
       background: ship ? `hsl(${ship.color.h}, ${ship.color.s}%, ${ship.color.l}%)` : `hsl(180, 50%, 50%)`,
       color: `hsl(0, 0%, ${Math.abs((99 - ship.color.l) % 100)}%)`,
@@ -34,7 +36,7 @@ export const useSolverStore = defineStore('solver', () => {
   }
 
   function solver(fast = false) {
-    plan.value = [];
+    plan.value.splice(0, plan.value.length);
     if (ships.value.length === 0) {
       return
     }
@@ -84,7 +86,7 @@ export const useSolverStore = defineStore('solver', () => {
   }
 
   const resetApp = () => {
-    plan.value = [];
+    plan.value.splice(0, plan.value.length);
   }
 
   return {
