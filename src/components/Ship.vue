@@ -1,5 +1,6 @@
 <script setup>
 import ColorPicker from "./ColorPicker.vue";
+import Toggle from "./Toggle.vue";
 
 const {
   useTons = false,
@@ -79,6 +80,17 @@ const updateShipProperty = (key, val) => {
     </div>
     <ColorPicker :ship-id="ship.shipId" :ship-idx="idx" />
     <div class="buttons">
+      <Toggle
+        label-left="roller"
+        label-right="threader"
+        v-model="ship.isThreader"
+        @change="
+          $emit(
+            'change:ship',
+            updateShipProperty('isThreader', ship.isThreader)
+          )
+        "
+      />
       <button
         class="rounded-full font-regular"
         @click="() => $emit('copy:ship')"

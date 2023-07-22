@@ -6,7 +6,7 @@ const { modelValue, labelLeft, labelRight } = defineProps({
   labelLeft: String,
   labelRight: String,
 });
-defineEmits(["update:modelValue"]);
+defineEmits(["update:modelValue", "change:modelValue"]);
 
 const uid = computed(() => getCurrentInstance().uid);
 </script>
@@ -21,7 +21,10 @@ const uid = computed(() => getCurrentInstance().uid);
           class="sr-only"
           :id="uid"
           :checked="modelValue"
-          @input="$emit('update:modelValue', $event.target.checked)"
+          @input="
+            $emit('update:modelValue', $event.target.checked);
+            $emit('change:modelValue', $event.target.checked);
+          "
         />
         <div class="block bg-gray-600 w-14 h-8 rounded-full"></div>
         <div

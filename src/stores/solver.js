@@ -42,7 +42,7 @@ export const useSolverStore = defineStore('solver', () => {
     }
     let limit = 0;
     while (planMassKg.value.min > 0) {
-      for (let s of ships.value) {
+      for (let s of ships.value.filter(s => !s.isThreader)) {
         if (s.cold < selectedWH.value.jumpMass) {
           if (planMassKg.value.med > (s.hot + s.hot)) {
             plan.value.push(
@@ -77,10 +77,31 @@ export const useSolverStore = defineStore('solver', () => {
           }
         }
       }
+
       limit++;
       if (limit > 10) {
         limit = 0;
         break;
+      }
+    }
+    for (let s of ships.value.filter(s => s.isThreader)) {
+      if (s.hot < selectedWH.value.jumpMass) {
+        if (planMassKg.value.max > s.cold) {
+          plan.value.push(
+            {
+              ship: s.name,
+              shipId: s.id,
+              jumpState: "cold",
+              mass: s.cold
+            },
+            {
+              ship: s.name,
+              shipId: s.id,
+              jumpState: "hot",
+              mass: s.hot
+            }
+          );
+        }
       }
     }
   }

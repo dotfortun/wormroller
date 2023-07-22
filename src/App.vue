@@ -71,6 +71,7 @@ watch(store.ships, () => {
                 name: 'roller',
                 cold: 174_000_000,
                 hot: 274_000_000,
+                isThreader: false,
                 color: {
                   h: randomInt(0, 360),
                   s: randomInt(42, 98),
