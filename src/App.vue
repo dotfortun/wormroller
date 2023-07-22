@@ -29,6 +29,8 @@ watch(store.ships, () => {
 const copyShip = (ship) => {
   let tempShip = Object.assign({}, ship);
   tempShip.id = Math.floor(Math.random() * 1000000);
+  let tempColors = Object.assign({}, ship.color);
+  tempShip.color = tempColors;
   console.log(ship, tempShip);
   return tempShip;
 };
