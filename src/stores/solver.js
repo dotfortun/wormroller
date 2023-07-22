@@ -26,11 +26,10 @@ export const useSolverStore = defineStore('solver', () => {
 
   function getJumpStyles(jump) {
     const ship = ships.value.filter((i) => i.id === jump.shipId)[0];
-    console.log(ships.value, ship)
 
     return {
       background: ship ? `hsl(${ship.color.h}, ${ship.color.s}%, ${ship.color.l}%)` : `hsl(180, 50%, 50%)`,
-      // color: `hsl(0, 0%, ${Math.abs((99 - ship.color.l) % 100)}%)`,
+      color: ship ? `hsl(0, 0%, ${Math.abs((99 - ship.color.l) % 100)}%)` : `hsl(180, 50%, 50%)`,
       // issue was with this line of code for some reason
       width: `${(jump.mass / (selectedWH.value.totalMass * 1.1)) * 100}%`,
     };
