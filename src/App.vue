@@ -25,15 +25,6 @@ const randomInt = (min, max) => {
 watch(store.ships, () => {
   solver(rollFast);
 });
-
-const copyShip = (ship) => {
-  let tempShip = Object.assign({}, ship);
-  tempShip.id = Math.floor(Math.random() * 1000000);
-  let tempColors = Object.assign({}, ship.color);
-  tempShip.color = tempColors;
-  console.log(ship, tempShip);
-  return tempShip;
-};
 </script>
 
 <template>
@@ -139,7 +130,7 @@ const copyShip = (ship) => {
             :use-tons="displayTons"
             @change:ship="store.ships.splice(idx, 1, $event)"
             @delete:ship="store.ships.splice(idx, 1)"
-            @copy:ship="store.ships.push(copyShip(ship))"
+            @copy:ship="store.ships.push(JSON.parse(JSON.stringify(ship)))"
           />
         </template>
       </draggable>
