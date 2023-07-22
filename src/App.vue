@@ -25,6 +25,13 @@ const randomInt = (min, max) => {
 watch(store.ships, () => {
   solver(rollFast);
 });
+
+const copyShip = (ship) => {
+  let tempShip = Object.assign({}, ship);
+  tempShip.id = Math.floor(Math.random() * 1000000);
+  console.log(ship, tempShip);
+  return tempShip;
+};
 </script>
 
 <template>
@@ -67,7 +74,7 @@ watch(store.ships, () => {
             class="w-max"
             @click="
               store.ships.push({
-                id: store.ships.length,
+                id: Math.floor(Math.random() * 1000000),
                 name: 'roller',
                 cold: 174_000_000,
                 hot: 274_000_000,
@@ -94,7 +101,6 @@ watch(store.ships, () => {
           </button>
         </div>
         <Toggle label-left="kg" label-right="tons" v-model="displayTons" />
-        <Toggle label-left="safe" label-right="fast" v-model="rollFast" />
         <Toggle label-left="icons" label-right="text" v-model="useText" />
       </div>
     </div>
@@ -131,7 +137,7 @@ watch(store.ships, () => {
             :use-tons="displayTons"
             @change:ship="store.ships.splice(idx, 1, $event)"
             @delete:ship="store.ships.splice(idx, 1)"
-            @copy:ship="store.ships.push(Object.assign({}, ship))"
+            @copy:ship="store.ships.push(copyShip(ship))"
           />
         </template>
       </draggable>

@@ -78,18 +78,12 @@ const updateShipProperty = (key, val) => {
         {{ useTons ? "tons" : "kg" }}
       </label>
     </div>
-    <ColorPicker :ship-id="ship.shipId" :ship-idx="idx" />
+    <ColorPicker :ship-id="ship.id" :ship-idx="idx" />
     <div class="buttons">
       <Toggle
         label-left="roller"
         label-right="threader"
         v-model="ship.isThreader"
-        @change="
-          $emit(
-            'change:ship',
-            updateShipProperty('isThreader', ship.isThreader)
-          )
-        "
       />
       <button
         class="rounded-full font-regular"

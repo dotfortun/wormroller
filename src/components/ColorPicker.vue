@@ -1,10 +1,12 @@
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { useSolverStore } from "../stores/solver";
+import { faPersonWalkingWithCane } from "@fortawesome/free-solid-svg-icons";
 
 const store = useSolverStore();
 
-const { shipIdx = 0 } = defineProps({
+const { shipIdx = 0, shipId = 0 } = defineProps({
+  shipId: Number,
   shipIdx: Number,
 });
 
@@ -31,6 +33,7 @@ const colors = ref(store.ships[shipIdx].color);
           :style="{
             accentColor: `hsl(${colors.h}, 100%, 50%)`,
           }"
+          @change="store.ships[shipIdx].color.h = $event.target.valueAsNumber"
         />
         hue
       </label>

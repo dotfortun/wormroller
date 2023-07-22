@@ -84,24 +84,33 @@ export const useSolverStore = defineStore('solver', () => {
         break;
       }
     }
-    for (let s of ships.value.filter(s => s.isThreader)) {
-      if (s.hot < selectedWH.value.jumpMass) {
-        if (planMassKg.value.max > s.cold) {
-          plan.value.push(
-            {
-              ship: s.name,
-              shipId: s.id,
-              jumpState: "cold",
-              mass: s.cold
-            },
-            {
-              ship: s.name,
-              shipId: s.id,
-              jumpState: "hot",
-              mass: s.hot
-            }
-          );
+    limit = 0;
+    while (planMassKg.value.max > 0) {
+      for (let s of ships.value.filter(s => s.isThreader)) {
+        if (s.hot < selectedWH.value.jumpMass) {
+          if (planMassKg.value.max > s.cold) {
+            plan.value.push(
+              {
+                ship: s.name,
+                shipId: s.id,
+                jumpState: "cold",
+                mass: s.cold
+              },
+              {
+                ship: s.name,
+                shipId: s.id,
+                jumpState: "hot",
+                mass: s.hot
+              }
+            );
+          }
         }
+      }
+
+      limit++;
+      if (limit > 10) {
+        limit = 0;
+        break;
       }
     }
   }
