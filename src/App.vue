@@ -182,7 +182,7 @@ footer a {
 }
 
 .wh-info {
-  @apply w-full;
+  @apply w-full md:flex flex-col w-full;
 }
 
 .wh-bar {
