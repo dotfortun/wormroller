@@ -104,11 +104,13 @@ const updateShipProperty = (key, val) => {
 <style scoped>
 .handle {
   @apply h-full w-4 flex flex-col justify-center select-none;
+  @apply row-span-3 md:row-span-1;
 }
 
 .ship {
-  @apply mx-auto my-2 h-min grid gap-4 items-center;
-  grid-template-columns: 2rem 1fr 1fr 1fr;
+  @apply mx-auto my-4 h-min;
+  @apply grid gap-4 items-center;
+  @apply grid-cols-[2rem_1fr] md:grid-cols-[2rem_1fr_1fr_1fr];
 }
 
 .ship-details {

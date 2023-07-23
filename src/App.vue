@@ -86,7 +86,6 @@ watch(store.ships, () => {
           <button
             class="clear w-max"
             @click="
-              // WHY IS THIS A THING THAT WORKS?
               store.plan.length = 0;
               store.ships.length = 0;
             "
@@ -98,7 +97,7 @@ watch(store.ships, () => {
         <Toggle label-left="icons" label-right="text" v-model="useText" />
       </div>
     </div>
-    <hr class="col-span-full" />
+    <hr class="col-span-full my-4" />
     <h3>Plan</h3>
     <div class="wh-bar h-12">
       <div
@@ -115,8 +114,9 @@ watch(store.ships, () => {
         </template>
       </div>
     </div>
+    <hr v-if="store.ships.length" class="col-span-full my-4" />
     <div class="ships-list">
-      <!-- <div class="warning-line"></div> -->
+      <h3 v-if="store.ships.length">Ships</h3>
       <draggable
         v-model="store.ships"
         item-key="id"
