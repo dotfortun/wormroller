@@ -28,7 +28,7 @@ watch(store.ships, () => {
 </script>
 
 <template>
-  <main>
+  <main class="container">
     <div class="wh-info">
       <h2 class="col-span-full">{{ store.selectedWH.type }}</h2>
       <div class="col-span-all row-span-1">
@@ -172,6 +172,7 @@ footer {
 footer a {
   @apply text-cyan-400 decoration-solid;
 }
+
 
 .controls {
   @apply grid grid-cols-2 content-center justify-between gap-2 mt-2;

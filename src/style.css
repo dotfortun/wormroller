@@ -53,3 +53,12 @@ button {
 .clear {
   @apply bg-red-700 hover:bg-red-500 border-red-800 hover:border-red-600;
 }
+
+@media (max-width:960px){
+  footer {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center;
+    text-align: center;
+  }
+}

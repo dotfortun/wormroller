@@ -120,6 +120,6 @@ const updateShipProperty = (key, val) => {
 }
 
 .buttons {
-  @apply flex flex-auto justify-center md:flex flex-col w-full justify-between mt-3 sm:flex flex-col ;
+  @apply flex flex-auto justify-center md:flex flex-col w-full justify-between mt-3 sm:flex flex-col;
 }
 </style>
