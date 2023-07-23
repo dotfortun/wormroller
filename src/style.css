@@ -62,3 +62,20 @@ button {
     text-align: center;
   }
 }
+
+@media (min-width: 481px) and (max-width: 767px) {
+  main {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  main {
+    display: flex;
+    flex-direction: column;
+  }
+
+  
+}
+
