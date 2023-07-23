@@ -63,19 +63,42 @@ button {
   }
 }
 
-@media (min-width: 481px) and (max-width: 767px) {
+@media (min-width: 550px) and (max-width: 767px) {
   main {
     display: flex;
     flex-direction: column;
   }
 }
 
-@media (max-width: 480px) {
+@media (min-width: 1px) and (max-width: 559px){
   main {
     display: flex;
     flex-direction: column;
   }
 
-  
+  .ship {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100%;
+  }
+
+  .buttons {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center;
+    width: fit-content;
+  }
+
+  .mobile-buttons {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+
+  .color-square {
+    width: 50%;
+  }
 }
 

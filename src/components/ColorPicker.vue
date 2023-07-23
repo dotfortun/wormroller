@@ -16,7 +16,7 @@ const colors = ref(store.ships[shipIdx].color);
 <template>
   <div class="color-picker">
     <div
-      class="w-full aspect-square m-auto rounded-md"
+      class="color-square w-full aspect-square m-auto rounded-md"
       :style="{
         background: `hsl(${colors.h}, ${colors.s}%, ${colors.l}%)`,
       }"

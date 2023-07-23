@@ -85,6 +85,7 @@ const updateShipProperty = (key, val) => {
         label-right="threader"
         v-model="ship.isThreader"
       />
+    <section class="mobile-buttons flex flex-col">
       <button
         class="rounded-full font-regular w-1/4"
         @click="() => $emit('copy:ship')"
@@ -97,6 +98,7 @@ const updateShipProperty = (key, val) => {
       >
         X
       </button>
+    </section>
     </div>
   </div>
 </template>
