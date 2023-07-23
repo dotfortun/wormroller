@@ -86,8 +86,9 @@ watch(store.ships, () => {
           <button
             class="clear w-max"
             @click="
-              store.plan.splice(0, store.ships.length);
-              store.ships.splice(0, store.plan.length);
+              // WHY IS THIS A THING THAT WORKS?
+              store.plan.length = 0;
+              store.ships.length = 0;
             "
           >
             Clear Ships
