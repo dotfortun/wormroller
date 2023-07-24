@@ -85,18 +85,20 @@ const updateShipProperty = (key, val) => {
         label-right="threader"
         v-model="ship.isThreader"
       />
+    <section class="mobile-buttons flex flex-col">
       <button
-        class="rounded-full font-regular"
+        class="rounded-full font-regular w-1/4"
         @click="() => $emit('copy:ship')"
       >
         Copy
       </button>
       <button
-        class="clear rounded-full font-regular"
+        class="clear rounded-full font-regular w-1/4"
         @click="() => $emit('delete:ship')"
       >
         X
       </button>
+    </section>
     </div>
   </div>
 </template>
@@ -122,6 +124,6 @@ const updateShipProperty = (key, val) => {
 }
 
 .buttons {
-  @apply flex flex-auto justify-center;
+  @apply flex flex-auto justify-center md:flex flex-col w-full justify-between mt-3 sm:flex flex-col;
 }
 </style>
