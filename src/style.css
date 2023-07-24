@@ -55,7 +55,7 @@ button {
   @apply bg-red-700 hover:bg-red-500 border-red-800 hover:border-red-600;
 }
 
-@media (max-width:960px){
+@media (max-width: 960px) {
   footer {
     display: flex !important;
     flex-direction: column !important;
@@ -71,7 +71,7 @@ button {
   }
 }
 
-@media (min-width: 1px) and (max-width: 559px){
+@media (min-width: 1px) and (max-width: 559px) {
   main {
     display: flex;
     flex-direction: column;
@@ -102,4 +102,3 @@ button {
     width: 50%;
   }
 }
-
