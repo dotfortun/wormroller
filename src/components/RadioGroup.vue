@@ -1,10 +1,14 @@
 <script setup>
+/**
+ * This one looks cool, but would be a pain to implement:
+ * https://codepen.io/trevanhetzel/pen/rOVrGK
+ */
 import { getCurrentInstance, computed } from "vue";
 const { modelValue = {}, options = [] } = defineProps({
   modelValue: Object,
   options: Array,
 });
-defineEmits(["update:modelValue"]);
+defineEmits(["update:model-value", "update:modelValue"]);
 
 const uid = computed(() => getCurrentInstance().uid);
 </script>
