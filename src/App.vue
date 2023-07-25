@@ -42,9 +42,6 @@ const massStatus = ref(stages[0]);
 </script>
 
 <template>
-  <div class="w-full h-92">
-    <RadioGroup v-model:model-value="massStatus" :options="stages" />
-  </div>
   <main class="container">
     <div class="wh-info">
       <h2 class="col-span-full">{{ store.selectedWH.type }}</h2>
