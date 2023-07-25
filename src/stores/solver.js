@@ -6,15 +6,12 @@ import { wormholes, stages } from "../wormholes"
 export const useSolverStore = defineStore('solver', () => {
 
   const selectedWH = ref(wormholes[0]);
+  const selectedStage = ref(stages[0]);
 
   const planMassKg = computed(() => ({
-    med: (selectedWH.value.totalMass - totalPlanMass.value),
-    min: ((selectedWH.value.totalMass * 0.9) - totalPlanMass.value),
-    max: ((selectedWH.value.totalMass * 1.1) - totalPlanMass.value),
-    stages: {
-      reduced: ((selectedWH.value.totalMass * 0.5) - totalPlanMass.value),
-      crit: ((selectedWH.value.totalMass * 0.1) - totalPlanMass.value),
-    }
+    med: (selectedStage.value.mass(selectedWH.value.totalMass) - totalPlanMass.value),
+    min: ((selectedStage.value.mass(selectedWH.value.totalMass) * 0.9) - totalPlanMass.value),
+    max: ((selectedStage.value.mass(selectedWH.value.totalMass) * 1.1) - totalPlanMass.value),
   }));
 
   const ships = ref([]);
@@ -122,6 +119,7 @@ export const useSolverStore = defineStore('solver', () => {
   return {
     planMassKg,
     selectedWH,
+    selectedStage,
     ships,
     wormholes,
     stages,

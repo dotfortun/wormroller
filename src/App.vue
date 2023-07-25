@@ -31,17 +31,15 @@ const swapShips = (ev) => {
   }
 };
 
-watch(store.ships, () => {
-  solver(rollFast);
-});
-
-const massStatus = ref(stages[0]);
+watch(
+  [store.ships, () => store.selectedStage.name, () => store.selectedWH.type],
+  () => {
+    solver(rollFast);
+  }
+);
 </script>
 
 <template>
-  <div class="w-full h-92">
-    <RadioGroup v-model:model-value="massStatus" :options="stages" />
-  </div>
   <main class="container">
     <div class="wh-info">
       <h2 class="col-span-full">{{ store.selectedWH.type }}</h2>
@@ -109,6 +107,12 @@ const massStatus = ref(stages[0]);
         </div>
         <Toggle label-left="kg" label-right="tons" v-model="displayTons" />
         <Toggle label-left="icons" label-right="text" v-model="useText" />
+        <div class="col-span-full">
+          <RadioGroup
+            v-model:model-value="store.selectedStage"
+            :options="stages"
+          />
+        </div>
       </div>
     </div>
     <hr class="col-span-full my-4" />
