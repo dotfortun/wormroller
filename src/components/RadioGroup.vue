@@ -11,18 +11,21 @@ const uid = computed(() => getCurrentInstance().uid);
 
 <template>
   <div
-    class="grid"
+    class="radio-group"
     :style="{
       gridTemplateColumns: `repeat(${options.length}, minmax(0, 1fr))`,
     }"
   >
     <input
       type="range"
-      class="col-span-full"
+      class="slide-selector"
       :min="0"
       :max="options.length - 1"
       :value="options.map((i) => i.name).indexOf(modelValue.name)"
       @change="$emit('update:modelValue', options[$event.target.valueAsNumber])"
+      :style="{
+        width: `calc(${options.length - 1}/${options.length} * 100%)`,
+      }"
     />
     <template v-for="opt in options">
       <label
@@ -31,27 +34,38 @@ const uid = computed(() => getCurrentInstance().uid);
       >
         {{ opt.name }}
       </label>
-      <input
-        type="radio"
-        :id="`${uid}-${opt.name}`"
-        :name="opt.name"
-        :checked="opt.name === modelValue.name"
-        @change="
-          $emit(
-            'update:modelValue',
-            options.filter((i) => i.name === $event.target.name).pop()
-          )
-        "
-      />
     </template>
+  </div>
+  <div class="sr-only">
+    <input
+      v-for="opt in options"
+      type="radio"
+      :id="`${uid}-${opt.name}`"
+      :name="opt.name"
+      :checked="opt.name === modelValue.name"
+      @change="
+        $emit(
+          'update:modelValue',
+          options.filter((i) => i.name === $event.target.name).pop()
+        )
+      "
+    />
   </div>
 </template>
 
 <style scoped>
+div.radio-group {
+  @apply grid justify-items-center;
+}
+
+input.slide-selector {
+  @apply col-span-full;
+}
+
 label {
-  @apply pr-4 -mr-8 w-fit h-fit select-none;
-  transform-origin: 100% 10%;
-  transform: rotate(-45deg);
+  @apply -mr-8 w-fit h-fit select-none;
+  transform-origin: 0% 150%;
+  transform: rotate(45deg);
 }
 
 .item-selected {
