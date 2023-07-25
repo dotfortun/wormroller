@@ -12,18 +12,18 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 /* import specific icons */
 import {
   faArrowsUpDown,
+  faArrowUp,
+  faArrowDown,
   faFire,
-  faGripLines,
-  faGripLinesVertical,
   faSnowflake,
   faTag
 } from '@fortawesome/free-solid-svg-icons'
 
 /* add icons to the library */
 library.add(
-  faGripLinesVertical,
-  faGripLines,
   faArrowsUpDown,
+  faArrowUp,
+  faArrowDown,
   faFire,
   faSnowflake,
   faTag

@@ -22,6 +22,14 @@ const randomInt = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
+const swapShips = (ev) => {
+  if (ev.newIdx >= 0 && ev.newIdx < store.ships.length) {
+    let a = store.ships[Math.min(ev.oldIdx, ev.newIdx)];
+    let b = store.ships[Math.max(ev.oldIdx, ev.newIdx)];
+    store.ships.splice(Math.min(ev.oldIdx, ev.newIdx), 2, b, a);
+  }
+};
+
 watch(store.ships, () => {
   solver(rollFast);
 });
@@ -130,6 +138,7 @@ watch(store.ships, () => {
             :ship="ship"
             :use-tons="displayTons"
             @change:ship="store.ships.splice(idx, 1, $event)"
+            @change:ship-idx="swapShips($event)"
             @delete:ship="store.ships.splice(idx, 1)"
             @copy:ship="store.ships.push(JSON.parse(JSON.stringify(ship)))"
           />
@@ -160,52 +169,4 @@ watch(store.ships, () => {
   </footer>
 </template>
 
-<style scoped>
-select {
-  @apply col-span-1;
-}
-
-footer {
-  @apply flex flex-row content-center justify-between p-4 text-slate-400;
-}
-
-footer a {
-  @apply text-cyan-400 decoration-solid;
-}
-
-
-.controls {
-  @apply grid grid-cols-2 content-center justify-between gap-2 mt-2;
-}
-
-.mass-label {
-  @apply font-semibold;
-}
-
-.wh-info {
-  @apply w-full md:flex flex-col w-full;
-}
-
-.wh-bar {
-  @apply w-full overflow-hidden items-center rounded-lg flex flex-row col-span-full bg-gradient-to-r from-gray-700 from-9/11 via-10/11 via-yellow-500 to-red-600;
-}
-
-.ship-bar {
-  @apply relative h-8 p-1 flex-shrink-0 flex-grow-0 text-center border-r-slate-400 border-solid border-r-2 overflow-hidden hover:isolate;
-}
-.ship-bar:first-child {
-  @apply rounded-l-lg;
-}
-
-.ship-bar:last-child {
-  @apply rounded-r-lg border-r-0;
-}
-
-.ships-list {
-  @apply col-span-2 content-center;
-}
-
-.warning-line {
-  @apply absolute right-3/11 top-0 h-10 z-10 border-red-700 border-r-2;
-}
-</style>
+<style scoped></style>

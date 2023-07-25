@@ -69,31 +69,14 @@ const colors = ref(store.ships[shipIdx].color);
 
 <style scoped>
 div.color-picker {
+  /* @apply flex flex-col gap-2 justify-center; */
   @apply grid grid-cols-3 gap-2;
 }
 
 div.sliders {
+  @apply max-sm:flex max-sm:flex-col gap-4 my-4;
   @apply col-span-2;
 }
-
-/* :root {
-  --rainbow: var(
-    linear-gradient(
-      90deg,
-      rgba(255, 0, 0, 1) 0%,
-      rgba(255, 154, 0, 1) 10%,
-      rgba(208, 222, 33, 1) 20%,
-      rgba(79, 220, 74, 1) 30%,
-      rgba(63, 218, 216, 1) 40%,
-      rgba(47, 201, 226, 1) 50%,
-      rgba(28, 127, 238, 1) 60%,
-      rgba(95, 21, 242, 1) 70%,
-      rgba(186, 12, 248, 1) 80%,
-      rgba(251, 7, 217, 1) 90%,
-      rgba(255, 0, 0, 1) 100%
-    )
-  );
-} */
 
 input {
   @apply w-1/2;
