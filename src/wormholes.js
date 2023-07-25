@@ -1,3 +1,18 @@
+export const stages = [
+  {
+    name: 'stage 1',
+    mass: (m) => m,
+  },
+  {
+    name: 'stage 2',
+    mass: (m) => m / 2,
+  },
+  {
+    name: 'stage 3',
+    mass: (m) => m / 10,
+  },
+]
+
 export const wormholes = [
   {
     "type": "A009",
