@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue';
 
-import { wormholes } from "../wormholes"
+import { wormholes, stages } from "../wormholes"
 
 export const useSolverStore = defineStore('solver', () => {
 
@@ -124,6 +124,7 @@ export const useSolverStore = defineStore('solver', () => {
     selectedWH,
     ships,
     wormholes,
+    stages,
     plan,
     solver,
     resetApp,

@@ -5,10 +5,11 @@ import draggable from "vuedraggable";
 import { useSolverStore } from "./stores/solver";
 
 import Toggle from "./components/Toggle.vue";
+import RadioGroup from "./components/RadioGroup.vue";
 import Ship from "./components/Ship.vue";
 
 const store = useSolverStore();
-const { wormholes, solver, getJumpStyles } = store;
+const { wormholes, stages, solver, getJumpStyles } = store;
 
 const displayTons = ref(true);
 const rollFast = ref(true);
@@ -25,9 +26,14 @@ const randomInt = (min, max) => {
 watch(store.ships, () => {
   solver(rollFast);
 });
+
+const massStatus = ref(stages[0]);
 </script>
 
 <template>
+  <div class="w-full h-92">
+    <RadioGroup v-model:model-value="massStatus" :options="stages" />
+  </div>
   <main class="container">
     <div class="wh-info">
       <h2 class="col-span-full">{{ store.selectedWH.type }}</h2>
@@ -172,7 +178,6 @@ footer {
 footer a {
   @apply text-cyan-400 decoration-solid;
 }
-
 
 .controls {
   @apply grid grid-cols-2 content-center justify-between gap-2 mt-2;
