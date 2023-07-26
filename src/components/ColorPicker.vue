@@ -1,7 +1,6 @@
 <script setup>
 import { ref, watch } from "vue";
 import { useSolverStore } from "../stores/solver";
-import { faPersonWalkingWithCane } from "@fortawesome/free-solid-svg-icons";
 
 const store = useSolverStore();
 
