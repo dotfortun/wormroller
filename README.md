@@ -1,12 +1,21 @@
-# Vue 3 + Vite
+# Wormroller (To be renamed maybe?)
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+This is a simple app built with Vue on Vite to help plan rolling off wormholes in Eve Online.
 
-## Recommended IDE Setup
+## Documentation
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://
-marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+Clone the project into your working directory, then run `npm install --save-dev` and `npm run dev`.
 
-## Credits:
+## Deployment
 
-Toggle button found here: https://codepen.io/lhermann/pen/EBGZRZ
+To deploy this project run `npm run build` and then serve `./dist` with your preferred server.
+
+This also works with a 1-button deployment on the free tier of Vercel:
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fdotfortun%2Fwormroller)
+
+
+## Authors
+
+- [@dotfortun](https://www.github.com/dotfortun)
+- [@israeldail](https://www.github.com/israeldail)
