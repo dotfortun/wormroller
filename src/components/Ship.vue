@@ -31,7 +31,7 @@ const updateShipProperty = (key, val) => {
 <template>
   <div class="ship">
     <div class="handle">
-      <font-awesome-icon icon="arrows-up-down" />
+      <font-awesome-icon class="max-sm:hidden" icon="arrows-up-down" />
     </div>
     <div class="ship-details">
       <input
@@ -99,16 +99,16 @@ const updateShipProperty = (key, val) => {
         X
       </button>
     </div>
-    <div class="buttons sm:sr-only">
+    <div class="buttons sm:hidden">
       <button
-        class="rounded-full font-regular w-1/4"
+        class="rounded-full font-regular w-1/4 sm:hidden"
         @click="$emit('change:shipIdx', { oldIdx: idx, newIdx: idx - 1 })"
         :disabled="idx === 0"
       >
         <font-awesome-icon icon="arrow-up" />
       </button>
       <button
-        class="rounded-full font-regular w-1/4"
+        class="rounded-full font-regular w-1/4 sm:hidden"
         @click="$emit('change:shipIdx', { oldIdx: idx, newIdx: idx + 1 })"
         :disabled="idx === store.ships.length - 1"
       >
@@ -131,7 +131,7 @@ input {
 }
 
 .handle {
-  @apply max-sm:sr-only; /* Don't show on mobile. */
+  @apply max-sm:hidden; /* Don't show on mobile. */
   @apply h-full w-4 flex flex-col justify-center select-none;
   @apply row-span-3 md:row-span-1;
 }
