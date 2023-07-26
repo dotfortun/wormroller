@@ -119,6 +119,10 @@ const updateShipProperty = (key, val) => {
 </template>
 
 <style scoped>
+input {
+  @apply bg-slate-800;
+}
+
 .ship {
   @apply mx-auto my-4 h-min;
   @apply flex flex-col items-center gap-2;
