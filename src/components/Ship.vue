@@ -120,7 +120,7 @@ const updateShipProperty = (key, val) => {
 
 <style scoped>
 input {
-  @apply bg-slate-800;
+  @apply bg-gray-700;
 }
 
 .ship {
