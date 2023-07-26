@@ -85,7 +85,7 @@ const updateShipProperty = (key, val) => {
       label-right="threader"
       v-model="ship.isThreader"
     />
-    <div class="buttons">
+    <div class="buttons max-lg:col-span-full">
       <button
         class="rounded-full font-regular w-1/4"
         @click="$emit('copy:ship')"
@@ -123,7 +123,7 @@ const updateShipProperty = (key, val) => {
   @apply mx-auto my-4 h-min;
   @apply flex flex-col items-center gap-2;
   @apply sm:grid sm:gap-4;
-  @apply sm:grid-cols-[2rem_1fr] md:grid-cols-[2rem_1fr_1fr_1fr];
+  @apply sm:grid-cols-[2rem_1fr] md:grid-cols-[2rem_1fr_1fr_1fr_1fr];
 }
 
 .handle {
@@ -142,6 +142,6 @@ const updateShipProperty = (key, val) => {
 
 .buttons {
   @apply flex flex-row justify-around w-full mt-3 gap-2;
-  @apply sm:justify-between;
+  @apply sm:justify-around;
 }
 </style>
