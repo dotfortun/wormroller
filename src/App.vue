@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, computed } from "vue";
 import draggable from "vuedraggable";
 
 import { useSolverStore } from "./stores/solver";
@@ -109,7 +109,7 @@ const massStatus = ref(stages[0]);
         </div>
         <Toggle label-left="kg" label-right="tons" v-model="displayTons" />
         <Toggle label-left="icons" label-right="text" v-model="useText" />
-        <div class="col-span-full">
+        <div class="col-span-full h-24">
           <RadioGroup
             v-model:model-value="store.selectedStage"
             :options="stages"
@@ -119,7 +119,7 @@ const massStatus = ref(stages[0]);
     </div>
     <hr class="col-span-full my-4" />
     <h3>Plan</h3>
-    <div class="wh-bar h-12">
+    <div :class="`wh-bar h-12 ${store.selectedStage.name.replace(/\s/, '_')}`">
       <div
         v-for="jump in store.plan"
         class="ship-bar"
@@ -181,4 +181,40 @@ const massStatus = ref(stages[0]);
   </footer>
 </template>
 
-<style scoped></style>
+<style scoped>
+* {
+  --danger-red: rgba(194, 31, 37, 1);
+  --warn-yellow: rgba(220, 220, 10, 1);
+  --safe-green: rgba(50, 175, 50, 1);
+}
+
+.stage_1 {
+  background: rgb(50, 175, 50);
+  background: linear-gradient(
+    90deg,
+    rgba(100 116 139 1) 0%,
+    var(--safe-green) calc(9 / 11 * 100%),
+    var(--warn-yellow) calc(10 / 11 * 100%),
+    var(--danger-red) 100%
+  );
+}
+
+.stage_2 {
+  background: linear-gradient(
+    90deg,
+    rgba(100 116 139 1) 0%,
+    var(--safe-green) 80%,
+    var(--warn-yellow) calc(7 / 11 * 100%),
+    var(--danger-red) 100%
+  );
+}
+
+.stage_3 {
+  background: linear-gradient(
+    90deg,
+    var(--safe-green) 0%,
+    var(--warn-yellow) 50%,
+    var(--danger-red) 100%
+  );
+}
+</style>

@@ -89,7 +89,7 @@ footer a {
 .wh-bar {
   @apply flex flex-row items-center;
   @apply w-full overflow-hidden rounded-lg col-span-full;
-  @apply bg-gradient-to-r from-gray-700 from-9/11 via-10/11 via-yellow-500 to-red-600;
+  @apply bg-slate-500;
 }
 
 .ship-bar {
