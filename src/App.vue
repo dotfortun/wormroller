@@ -1,14 +1,15 @@
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, computed } from "vue";
 import draggable from "vuedraggable";
 
 import { useSolverStore } from "./stores/solver";
 
 import Toggle from "./components/Toggle.vue";
+import RadioGroup from "./components/RadioGroup.vue";
 import Ship from "./components/Ship.vue";
 
 const store = useSolverStore();
-const { wormholes, solver, getJumpStyles } = store;
+const { wormholes, stages, solver, getJumpStyles } = store;
 
 const displayTons = ref(true);
 const rollFast = ref(true);
@@ -30,9 +31,14 @@ const swapShips = (ev) => {
   }
 };
 
-watch(store.ships, () => {
-  solver(rollFast);
-});
+watch(
+  [store.ships, () => store.selectedStage.name, () => store.selectedWH.type],
+  () => {
+    solver(rollFast);
+  }
+);
+
+const massStatus = ref(stages[0]);
 </script>
 
 <template>
@@ -103,11 +109,17 @@ watch(store.ships, () => {
         </div>
         <Toggle label-left="kg" label-right="tons" v-model="displayTons" />
         <Toggle label-left="icons" label-right="text" v-model="useText" />
+        <div class="col-span-full h-24">
+          <RadioGroup
+            v-model:model-value="store.selectedStage"
+            :options="stages"
+          />
+        </div>
       </div>
     </div>
     <hr class="col-span-full my-4" />
     <h3>Plan</h3>
-    <div class="wh-bar h-12">
+    <div :class="`wh-bar h-12 ${store.selectedStage.name.replace(/\s/, '_')}`">
       <div
         v-for="jump in store.plan"
         class="ship-bar"
@@ -169,4 +181,44 @@ watch(store.ships, () => {
   </footer>
 </template>
 
-<style scoped></style>
+<style scoped>
+.wh-bar {
+  --slate-500: rgba(100 116 139 / 1);
+  --danger-red: rgba(194 31 37 / 1);
+  --warn-yellow: rgba(220 220 10 / 1);
+  --safe-green: rgba(50 175 50 / 1);
+
+  @apply bg-slate-500;
+}
+
+.wh-bar.wh-bar.stage_1 {
+  background: linear-gradient(
+    90deg,
+    var(--slate-500) 0%,
+    var(--slate-500) calc(9 / 11 * 100%),
+    var(--safe-green) calc(9 / 11 * 100%),
+    var(--warn-yellow) calc(10 / 11 * 100%),
+    var(--danger-red) 100%
+  );
+}
+
+.wh-bar.stage_2 {
+  background: linear-gradient(
+    90deg,
+    var(--slate-500) 0%,
+    var(--slate-500) calc(9 / 11 / 2 * 100%),
+    var(--safe-green) calc(9 / 11 / 2 * 100%),
+    var(--warn-yellow) calc(10 / 11 / 2 * 100%),
+    var(--danger-red) 100%
+  );
+}
+
+.wh-bar.stage_3 {
+  background: linear-gradient(
+    90deg,
+    var(--safe-green) 0%,
+    var(--warn-yellow) 50%,
+    var(--danger-red) 100%
+  );
+}
+</style>
