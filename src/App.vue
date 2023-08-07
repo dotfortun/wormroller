@@ -31,6 +31,12 @@ const swapShips = (ev) => {
   }
 };
 
+const copyShip = (ship) => {
+  let newShip = JSON.parse(JSON.stringify(ship));
+  newShip.id = Math.floor(Math.random() * 1000000);
+  return newShip;
+};
+
 watch(
   [store.ships, () => store.selectedStage.name, () => store.selectedWH.type],
   () => {
@@ -152,7 +158,7 @@ const massStatus = ref(stages[0]);
             @change:ship="store.ships.splice(idx, 1, $event)"
             @change:ship-idx="swapShips($event)"
             @delete:ship="store.ships.splice(idx, 1)"
-            @copy:ship="store.ships.push(JSON.parse(JSON.stringify(ship)))"
+            @copy:ship="store.ships.push(copyShip(ship))"
           />
         </template>
       </draggable>
