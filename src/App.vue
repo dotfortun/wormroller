@@ -180,34 +180,38 @@ watch(
 </template>
 
 <style scoped>
-* {
-  --danger-red: rgba(194, 31, 37, 1);
-  --warn-yellow: rgba(220, 220, 10, 1);
-  --safe-green: rgba(50, 175, 50, 1);
+.wh-bar {
+  --slate-500: rgba(100 116 139 / 1);
+  --danger-red: rgba(194 31 37 / 1);
+  --warn-yellow: rgba(220 220 10 / 1);
+  --safe-green: rgba(50 175 50 / 1);
+
+  @apply bg-slate-500;
 }
 
-.stage_1 {
-  background: rgb(50, 175, 50);
+.wh-bar.wh-bar.stage_1 {
   background: linear-gradient(
     90deg,
-    rgba(100 116 139 1) 0%,
+    var(--slate-500) 0%,
+    var(--slate-500) calc(9 / 11 * 100%),
     var(--safe-green) calc(9 / 11 * 100%),
     var(--warn-yellow) calc(10 / 11 * 100%),
     var(--danger-red) 100%
   );
 }
 
-.stage_2 {
+.wh-bar.stage_2 {
   background: linear-gradient(
     90deg,
-    rgba(100 116 139 1) 0%,
-    var(--safe-green) 80%,
-    var(--warn-yellow) calc(7 / 11 * 100%),
+    var(--slate-500) 0%,
+    var(--slate-500) calc(9 / 11 / 2 * 100%),
+    var(--safe-green) calc(9 / 11 / 2 * 100%),
+    var(--warn-yellow) calc(10 / 11 / 2 * 100%),
     var(--danger-red) 100%
   );
 }
 
-.stage_3 {
+.wh-bar.stage_3 {
   background: linear-gradient(
     90deg,
     var(--safe-green) 0%,
