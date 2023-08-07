@@ -1,6 +1,8 @@
 # Wormroller (To be renamed maybe?)
 
-This is a simple app built with Vue on Vite to help plan rolling off wormholes in Eve Online.
+The repo for http://wormroller.dotlag.info.
+
+This is just a calculator built on Vue to help simplify the process of rolling wormholes in Eve Online.
 
 ## Documentation
 
