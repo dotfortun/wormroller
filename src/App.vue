@@ -167,8 +167,9 @@ const massStatus = ref(stages[0]);
   <footer>
     <div>
       <p>
-        Created by <a href="https://github.com/dotfortun">dotfortun</a> and
-        <a href="https://github.com/israeldail">israeldail</a>.
+        Created by
+        <a href="https://github.com/dotfortun" target="_blank">dotfortun</a> and
+        <a href="https://github.com/israeldail" target="_blank">israeldail</a>.
       </p>
       <p>
         <small>
@@ -179,7 +180,10 @@ const massStatus = ref(stages[0]);
     </div>
     <div>
       <p>
-        <a href="https://github.com/dotfortun/wormroller/issues">
+        <a
+          href="https://github.com/dotfortun/wormroller/labels/bug"
+          target="_blank"
+        >
           Found a bug? Tell us here!
         </a>
       </p>
