@@ -80,40 +80,26 @@ const updateShipProperty = (key, val) => {
       </label>
     </div>
     <ColorPicker :ship-id="ship.id" :ship-idx="idx" />
-    <Toggle
-      label-left="roller"
-      label-right="threader"
-      v-model="ship.isThreader"
-    />
-    <div class="buttons max-lg:col-span-full">
-      <button
-        class="rounded-full font-regular w-1/4"
-        @click="$emit('copy:ship')"
-      >
-        Copy
-      </button>
-      <button
-        class="clear rounded-full font-regular w-1/4"
-        @click="$emit('delete:ship')"
-      >
-        X
-      </button>
-    </div>
-    <div class="buttons sm:hidden">
-      <button
-        class="rounded-full font-regular w-1/4 sm:hidden"
-        @click="$emit('change:shipIdx', { oldIdx: idx, newIdx: idx - 1 })"
-        :disabled="idx === 0"
-      >
-        <font-awesome-icon icon="arrow-up" />
-      </button>
-      <button
-        class="rounded-full font-regular w-1/4 sm:hidden"
-        @click="$emit('change:shipIdx', { oldIdx: idx, newIdx: idx + 1 })"
-        :disabled="idx === store.ships.length - 1"
-      >
-        <font-awesome-icon icon="arrow-down" />
-      </button>
+    <div class="buttons">
+      <Toggle
+        label-left="roller"
+        label-right="threader"
+        v-model="ship.isThreader"
+      />
+      <section class="mobile-buttons flex flex-col">
+        <button
+          class="rounded-full font-regular w-full"
+          @click="() => $emit('copy:ship')"
+        >
+          Copy
+        </button>
+        <button
+          class="clear rounded-full font-regular w-full"
+          @click="() => $emit('delete:ship')"
+        >
+          X
+        </button>
+      </section>
     </div>
   </div>
 </template>
