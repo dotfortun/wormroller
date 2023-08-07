@@ -88,13 +88,13 @@ const updateShipProperty = (key, val) => {
       />
       <section class="mobile-buttons flex flex-col">
         <button
-          class="rounded-full font-regular w-1/4"
+          class="rounded-full font-regular w-full"
           @click="() => $emit('copy:ship')"
         >
           Copy
         </button>
         <button
-          class="clear rounded-full font-regular w-1/4"
+          class="clear rounded-full font-regular w-full"
           @click="() => $emit('delete:ship')"
         >
           X
