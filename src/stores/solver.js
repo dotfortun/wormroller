@@ -9,7 +9,7 @@ export const useSolverStore = defineStore('solver', () => {
   const selectedStage = ref(stages[0]);
 
   const planMassKg = computed(() => ({
-    med: (selectedStage.value.mass(selectedWH.value.totalMass) - totalPlanMass.value),
+    med: (selectedStage.value.mass(selectedWH.value.totalMass * 1) - totalPlanMass.value),
     min: ((selectedStage.value.mass(selectedWH.value.totalMass) * 0.9) - totalPlanMass.value),
     max: ((selectedStage.value.mass(selectedWH.value.totalMass) * 1.1) - totalPlanMass.value),
   }));
