@@ -6,7 +6,12 @@ const { modelValue, labelLeft, labelRight } = defineProps({
   labelLeft: String,
   labelRight: String,
 });
-defineEmits(["update:modelValue", "change:modelValue"]);
+defineEmits([
+  "update:model-value",
+  "change:model-value",
+  "update:modelValue",
+  "change:modelValue",
+]);
 
 const uid = computed(() => getCurrentInstance().uid);
 </script>

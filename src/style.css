@@ -21,7 +21,9 @@
 }
 
 main {
-  @apply grid md:grid-cols-2 grid-cols-1 gap-1 my-5 mx-auto w-8/12 md:max-w-full;
+  @apply flex flex-col my-5 mx-auto px-4;
+  @apply md:grid md:grid-cols-2 gap-1;
+  @apply w-full md:w-8/12 md:max-w-full;
 }
 
 h1 {
@@ -43,62 +45,68 @@ h4 {
 }
 
 select {
-  @apply bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white text-xl dark:focus:ring-blue-500 dark:focus:border-blue-500;
+  @apply rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white text-xl focus:ring-blue-500 focus:border-blue-500;
+  @apply border border-gray-300 focus:border-blue-500;
 }
 
 button {
-  @apply mx-1 text-sm bg-blue-500 hover:bg-blue-400 text-white font-bold py-1 px-2 border-b-4 border-blue-700 hover:border-blue-500 rounded col-span-1 place-self-center w-min;
+  @apply mx-1 text-sm  text-white font-bold py-1 px-2 border-b-4 rounded col-span-1 place-self-center w-min;
+  @apply bg-blue-500 border-blue-700;
+  @apply hover:bg-blue-400 hover:border-blue-500;
+  @apply disabled:text-slate-500 disabled:bg-slate-700 disabled:border-slate-800 disabled:border-b-2;
 }
 
 .clear {
   @apply bg-red-700 hover:bg-red-500 border-red-800 hover:border-red-600;
 }
 
-@media (max-width:960px){
-  footer {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center;
-    text-align: center;
-  }
+select {
+  @apply col-span-1 bg-gray-700;
 }
 
-@media (min-width: 550px) and (max-width: 767px) {
-  main {
-    display: flex;
-    flex-direction: column;
-  }
+footer {
+  @apply flex flex-row content-center justify-between p-4 text-slate-400;
+  @apply max-lg:flex-col max-lg:items-center max-lg:text-center;
 }
 
-@media (min-width: 1px) and (max-width: 559px){
-  main {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .ship {
-    display: flex !important;
-    flex-direction: column !important;
-    width: 100%;
-  }
-
-  .buttons {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center;
-    width: fit-content;
-  }
-
-  .mobile-buttons {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    justify-content: center;
-    margin-top: 1rem;
-  }
-
-  .color-square {
-    width: 50%;
-  }
+footer a {
+  @apply text-cyan-400 decoration-solid;
 }
 
+.controls {
+  @apply grid grid-cols-2 content-center justify-between gap-2 mt-2;
+}
+
+.mass-label {
+  @apply font-semibold;
+}
+
+.wh-info {
+  @apply w-full md:flex flex-col;
+}
+
+.wh-bar {
+  @apply flex flex-row items-center;
+  @apply w-full overflow-hidden rounded-lg col-span-full;
+  @apply bg-slate-500;
+}
+
+.ship-bar {
+  @apply relative h-8 p-1 flex-shrink-0 flex-grow-0 text-center overflow-hidden;
+  @apply border-r-slate-400 border-solid border-r-2;
+}
+.ship-bar:first-child {
+  @apply rounded-l-lg;
+}
+
+.ship-bar:last-child {
+  @apply rounded-r-lg border-r-0;
+}
+
+.ships-list {
+  @apply col-span-2 content-center;
+}
+
+.warning-line {
+  @apply absolute right-3/11 top-0 h-10 z-10 border-red-700 border-r-2;
+}

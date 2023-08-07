@@ -2,6 +2,10 @@
 import ColorPicker from "./ColorPicker.vue";
 import Toggle from "./Toggle.vue";
 
+import { useSolverStore } from "../stores/solver";
+
+const store = useSolverStore();
+
 const {
   useTons = false,
   ship = {},
@@ -11,7 +15,7 @@ const {
   useTons: Boolean,
   ship: Object,
 });
-defineEmits(["change:ship", "delete:ship", "copy:ship"]);
+defineEmits(["change:ship", "change:shipIdx", "delete:ship", "copy:ship"]);
 
 const updateShipProperty = (key, val) => {
   let updatedShip = ship;
@@ -27,15 +31,14 @@ const updateShipProperty = (key, val) => {
 <template>
   <div class="ship">
     <div class="handle">
-      <font-awesome-icon icon="arrows-up-down" />
+      <font-awesome-icon class="max-sm:hidden" icon="arrows-up-down" />
     </div>
     <div class="ship-details">
       <input
         type="text"
         :value="ship.name"
         @change="
-          (ev) =>
-            $emit('change:ship', updateShipProperty('name', ev.target.value))
+          $emit('change:ship', updateShipProperty('name', $event.target.value))
         "
         placeholder="Ship Name"
       />
@@ -44,14 +47,13 @@ const updateShipProperty = (key, val) => {
           type="number"
           :value="useTons ? Math.floor(ship.cold / 1000) : ship.cold"
           @change="
-            (ev) =>
-              $emit(
-                'change:ship',
-                updateShipProperty(
-                  'cold',
-                  ev.target.valueAsNumber * (useTons ? 1000 : 1)
-                )
+            $emit(
+              'change:ship',
+              updateShipProperty(
+                'cold',
+                $event.target.valueAsNumber * (useTons ? 1000 : 1)
               )
+            )
           "
           placeholder="Cold Mass"
           :min="0"
@@ -63,14 +65,13 @@ const updateShipProperty = (key, val) => {
           type="number"
           :value="useTons ? Math.floor(ship.hot / 1000) : ship.hot"
           @change="
-            (ev) =>
-              $emit(
-                'change:ship',
-                updateShipProperty(
-                  'hot',
-                  ev.target.valueAsNumber * (useTons ? 1000 : 1)
-                )
+            $emit(
+              'change:ship',
+              updateShipProperty(
+                'hot',
+                $event.target.valueAsNumber * (useTons ? 1000 : 1)
               )
+            )
           "
           placeholder="Hot Mass"
           :min="0"
@@ -79,38 +80,60 @@ const updateShipProperty = (key, val) => {
       </label>
     </div>
     <ColorPicker :ship-id="ship.id" :ship-idx="idx" />
-    <div class="buttons">
-      <Toggle
-        label-left="roller"
-        label-right="threader"
-        v-model="ship.isThreader"
-      />
-    <section class="mobile-buttons flex flex-col">
+    <Toggle
+      label-left="roller"
+      label-right="threader"
+      v-model="ship.isThreader"
+    />
+    <div class="buttons max-lg:col-span-full">
       <button
         class="rounded-full font-regular w-1/4"
-        @click="() => $emit('copy:ship')"
+        @click="$emit('copy:ship')"
       >
         Copy
       </button>
       <button
         class="clear rounded-full font-regular w-1/4"
-        @click="() => $emit('delete:ship')"
+        @click="$emit('delete:ship')"
       >
         X
       </button>
-    </section>
+    </div>
+    <div class="buttons sm:hidden">
+      <button
+        class="rounded-full font-regular w-1/4 sm:hidden"
+        @click="$emit('change:shipIdx', { oldIdx: idx, newIdx: idx - 1 })"
+        :disabled="idx === 0"
+      >
+        <font-awesome-icon icon="arrow-up" />
+      </button>
+      <button
+        class="rounded-full font-regular w-1/4 sm:hidden"
+        @click="$emit('change:shipIdx', { oldIdx: idx, newIdx: idx + 1 })"
+        :disabled="idx === store.ships.length - 1"
+      >
+        <font-awesome-icon icon="arrow-down" />
+      </button>
     </div>
   </div>
 </template>
 
 <style scoped>
-.handle {
-  @apply h-full w-4 flex flex-col justify-center select-none;
+input {
+  @apply bg-gray-700 p-0.5 pl-1.5 m-0.5 rounded-md;
 }
 
 .ship {
-  @apply mx-auto my-2 h-min grid gap-4 items-center;
-  grid-template-columns: 2rem 1fr 1fr 1fr;
+  @apply mx-auto my-4 h-min;
+  @apply flex flex-col items-center gap-2;
+  @apply sm:grid sm:gap-4;
+  @apply sm:grid-cols-[2rem_1fr] md:grid-cols-[2rem_1fr_1fr_1fr_1fr];
+}
+
+.handle {
+  @apply max-sm:hidden; /* Don't show on mobile. */
+  @apply h-full w-4 flex flex-col justify-center select-none;
+  @apply row-span-3 md:row-span-1;
 }
 
 .ship-details {
@@ -122,6 +145,7 @@ const updateShipProperty = (key, val) => {
 }
 
 .buttons {
-  @apply flex flex-auto justify-center md:flex flex-col w-full justify-between mt-3 sm:flex flex-col;
+  @apply flex flex-row justify-around w-full mt-3 gap-2;
+  @apply sm:justify-around;
 }
 </style>

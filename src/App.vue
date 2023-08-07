@@ -1,14 +1,15 @@
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, computed } from "vue";
 import draggable from "vuedraggable";
 
 import { useSolverStore } from "./stores/solver";
 
 import Toggle from "./components/Toggle.vue";
+import RadioGroup from "./components/RadioGroup.vue";
 import Ship from "./components/Ship.vue";
 
 const store = useSolverStore();
-const { wormholes, solver, getJumpStyles } = store;
+const { wormholes, stages, solver, getJumpStyles } = store;
 
 const displayTons = ref(true);
 const rollFast = ref(true);
@@ -22,9 +23,28 @@ const randomInt = (min, max) => {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-watch(store.ships, () => {
-  solver(rollFast);
-});
+const swapShips = (ev) => {
+  if (ev.newIdx >= 0 && ev.newIdx < store.ships.length) {
+    let a = store.ships[Math.min(ev.oldIdx, ev.newIdx)];
+    let b = store.ships[Math.max(ev.oldIdx, ev.newIdx)];
+    store.ships.splice(Math.min(ev.oldIdx, ev.newIdx), 2, b, a);
+  }
+};
+
+const copyShip = (ship) => {
+  let newShip = JSON.parse(JSON.stringify(ship));
+  newShip.id = Math.floor(Math.random() * 1000000);
+  return newShip;
+};
+
+watch(
+  [store.ships, () => store.selectedStage.name, () => store.selectedWH.type],
+  () => {
+    solver(rollFast);
+  }
+);
+
+const massStatus = ref(stages[0]);
 </script>
 
 <template>
@@ -86,7 +106,6 @@ watch(store.ships, () => {
           <button
             class="clear w-max"
             @click="
-              // WHY IS THIS A THING THAT WORKS?
               store.plan.length = 0;
               store.ships.length = 0;
             "
@@ -96,11 +115,17 @@ watch(store.ships, () => {
         </div>
         <Toggle label-left="kg" label-right="tons" v-model="displayTons" />
         <Toggle label-left="icons" label-right="text" v-model="useText" />
+        <div class="col-span-full h-24">
+          <RadioGroup
+            v-model:model-value="store.selectedStage"
+            :options="stages"
+          />
+        </div>
       </div>
     </div>
-    <hr class="col-span-full" />
+    <hr class="col-span-full my-4" />
     <h3>Plan</h3>
-    <div class="wh-bar h-12">
+    <div :class="`wh-bar h-12 ${store.selectedStage.name.replace(/\s/, '_')}`">
       <div
         v-for="jump in store.plan"
         class="ship-bar"
@@ -115,8 +140,9 @@ watch(store.ships, () => {
         </template>
       </div>
     </div>
+    <hr v-if="store.ships.length" class="col-span-full my-4" />
     <div class="ships-list">
-      <!-- <div class="warning-line"></div> -->
+      <h3 v-if="store.ships.length">Ships</h3>
       <draggable
         v-model="store.ships"
         item-key="id"
@@ -130,8 +156,9 @@ watch(store.ships, () => {
             :ship="ship"
             :use-tons="displayTons"
             @change:ship="store.ships.splice(idx, 1, $event)"
+            @change:ship-idx="swapShips($event)"
             @delete:ship="store.ships.splice(idx, 1)"
-            @copy:ship="store.ships.push(JSON.parse(JSON.stringify(ship)))"
+            @copy:ship="store.ships.push(copyShip(ship))"
           />
         </template>
       </draggable>
@@ -161,51 +188,43 @@ watch(store.ships, () => {
 </template>
 
 <style scoped>
-select {
-  @apply col-span-1;
-}
-
-footer {
-  @apply flex flex-row content-center justify-between p-4 text-slate-400;
-}
-
-footer a {
-  @apply text-cyan-400 decoration-solid;
-}
-
-
-.controls {
-  @apply grid grid-cols-2 content-center justify-between gap-2 mt-2;
-}
-
-.mass-label {
-  @apply font-semibold;
-}
-
-.wh-info {
-  @apply w-full md:flex flex-col w-full;
-}
-
 .wh-bar {
-  @apply w-full overflow-hidden items-center rounded-lg flex flex-row col-span-full bg-gradient-to-r from-gray-700 from-9/11 via-10/11 via-yellow-500 to-red-600;
+  --slate-500: rgba(100 116 139 / 1);
+  --danger-red: rgba(194 31 37 / 1);
+  --warn-yellow: rgba(220 220 10 / 1);
+  --safe-green: rgba(50 175 50 / 1);
+
+  @apply bg-slate-500;
 }
 
-.ship-bar {
-  @apply relative h-8 p-1 flex-shrink-0 flex-grow-0 text-center border-r-slate-400 border-solid border-r-2 overflow-hidden hover:isolate;
-}
-.ship-bar:first-child {
-  @apply rounded-l-lg;
-}
-
-.ship-bar:last-child {
-  @apply rounded-r-lg border-r-0;
-}
-
-.ships-list {
-  @apply col-span-2 content-center;
+.wh-bar.wh-bar.stage_1 {
+  background: linear-gradient(
+    90deg,
+    var(--slate-500) 0%,
+    var(--slate-500) calc(9 / 11 * 100%),
+    var(--safe-green) calc(9 / 11 * 100%),
+    var(--warn-yellow) calc(10 / 11 * 100%),
+    var(--danger-red) 100%
+  );
 }
 
-.warning-line {
-  @apply absolute right-3/11 top-0 h-10 z-10 border-red-700 border-r-2;
+.wh-bar.stage_2 {
+  background: linear-gradient(
+    90deg,
+    var(--slate-500) 0%,
+    var(--slate-500) calc(9 / 11 / 2 * 100%),
+    var(--safe-green) calc(9 / 11 / 2 * 100%),
+    var(--warn-yellow) calc(10 / 11 / 2 * 100%),
+    var(--danger-red) 100%
+  );
+}
+
+.wh-bar.stage_3 {
+  background: linear-gradient(
+    90deg,
+    var(--safe-green) 0%,
+    var(--warn-yellow) 50%,
+    var(--danger-red) 100%
+  );
 }
 </style>
