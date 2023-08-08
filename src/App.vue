@@ -51,7 +51,34 @@ const massStatus = ref(stages[0]);
   <main class="container">
     <div class="wh-info">
       <select v-model="store.selectedWH" @change="solver(rollFast)">
-        <option v-for="wh in wormholes" :key="wh.type" :value="wh">
+        <option disabled>Static</option>
+        <option
+          v-for="wh in wormholes.filter((elem) =>
+            elem.link_types.includes('static')
+          )"
+          :key="wh.type"
+          :value="wh"
+        >
+          {{ wh.type }}
+        </option>
+        <option disabled>Pochven</option>
+        <option
+          v-for="wh in wormholes.filter((elem) =>
+            elem.link_types.includes('pochven')
+          )"
+          :key="wh.type"
+          :value="wh"
+        >
+          {{ wh.type }}
+        </option>
+        <option disabled>Wandering</option>
+        <option
+          v-for="wh in wormholes.filter((elem) =>
+            elem.link_types.includes('wandering')
+          )"
+          :key="wh.type"
+          :value="wh"
+        >
           {{ wh.type }}
         </option>
       </select>
@@ -191,6 +218,10 @@ const massStatus = ref(stages[0]);
 </template>
 
 <style scoped>
+option:disabled {
+  @apply text-slate-400 font-bold bg-slate-800;
+}
+
 .wh-bar {
   --slate-500: rgba(100 116 139 / 1);
   --danger-red: rgba(194 31 37 / 1);

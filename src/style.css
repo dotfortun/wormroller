@@ -61,7 +61,7 @@ button {
 }
 
 select {
-  @apply col-span-1 bg-gray-700;
+  @apply col-span-1 bg-gray-700 w-fit;
 }
 
 footer {
