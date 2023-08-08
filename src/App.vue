@@ -50,7 +50,11 @@ const massStatus = ref(stages[0]);
 <template>
   <main class="container">
     <div class="wh-info">
-      <h2 class="col-span-full">{{ store.selectedWH.type }}</h2>
+      <select v-model="store.selectedWH" @change="solver(rollFast)">
+        <option v-for="wh in wormholes" :key="wh.type" :value="wh">
+          {{ wh.type }}
+        </option>
+      </select>
       <div class="col-span-all row-span-1">
         <span class="mass-label">Total Mass:</span>{{ " " }}
         <span>
@@ -76,13 +80,8 @@ const massStatus = ref(stages[0]);
       </div>
     </div>
     <div>
-      <select v-model="store.selectedWH" @change="solver(rollFast)">
-        <option v-for="wh in wormholes" :key="wh.type" :value="wh">
-          {{ wh.type }}
-        </option>
-      </select>
       <div class="controls">
-        <div class="col-span-full">
+        <div class="col-span-full flex justify-around">
           <button
             class="w-max"
             @click="
