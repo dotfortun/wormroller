@@ -11,7 +11,9 @@ export const useSolverStore = defineStore('solver', () => {
   const url = computed(() => new URL(window.location));
   if (url.value.search) {
     const params = new URLSearchParams(url.value.search);
-    selectedWH.value = wormholes.find((elem) => elem.type.toLowerCase() === params.get("sig"));
+    selectedWH.value = wormholes.find((elem) => {
+      return elem.type.toLowerCase() === params.get("sig").toLowerCase()
+    });
   }
 
   const planMassKg = computed(() => ({
