@@ -105,43 +105,43 @@ const massStatus = ref(stages[0]);
           {{ displayTons ? "tons" : "kg" }}
         </span>
       </div>
+      <div class="col-span-full flex justify-around mt-4">
+        <button
+          class="w-max"
+          @click="
+            store.ships.push({
+              id: Math.floor(Math.random() * 1000000),
+              name: 'roller',
+              cold: 174_000_000,
+              hot: 274_000_000,
+              isThreader: false,
+              color: {
+                h: randomInt(0, 360),
+                s: randomInt(42, 98),
+                l: randomInt(40, 90),
+              },
+            });
+            solver(rollFast);
+          "
+        >
+          Add Ship
+        </button>
+        <button
+          class="clear w-max"
+          @click="
+            store.plan.length = 0;
+            store.ships.length = 0;
+          "
+        >
+          Clear Ships
+        </button>
+      </div>
     </div>
     <div>
       <div class="controls">
-        <div class="col-span-full flex justify-around">
-          <button
-            class="w-max"
-            @click="
-              store.ships.push({
-                id: Math.floor(Math.random() * 1000000),
-                name: 'roller',
-                cold: 174_000_000,
-                hot: 274_000_000,
-                isThreader: false,
-                color: {
-                  h: randomInt(0, 360),
-                  s: randomInt(42, 98),
-                  l: randomInt(40, 90),
-                },
-              });
-              solver(rollFast);
-            "
-          >
-            Add Ship
-          </button>
-          <button
-            class="clear w-max"
-            @click="
-              store.plan.length = 0;
-              store.ships.length = 0;
-            "
-          >
-            Clear Ships
-          </button>
-        </div>
         <Toggle label-left="kg" label-right="tons" v-model="displayTons" />
         <Toggle label-left="icons" label-right="text" v-model="useText" />
-        <div class="col-span-full h-24">
+        <div class="col-span-full h-24 w-full pr-8">
           <RadioGroup
             v-model:model-value="store.selectedStage"
             :options="stages"
@@ -175,6 +175,7 @@ const massStatus = ref(stages[0]);
         @end="solver(rollFast)"
         :on-remove="(ev) => console.log(ev)"
         handle=".handle"
+        ghost-class="ghost"
       >
         <template #item="{ element: ship, index: idx }">
           <Ship
@@ -218,8 +219,16 @@ const massStatus = ref(stages[0]);
 </template>
 
 <style scoped>
+.controls {
+  @apply grid grid-cols-2 justify-items-center gap-6 mt-2;
+}
+
 option:disabled {
   @apply text-slate-400 font-bold bg-slate-800;
+}
+
+.ghost {
+  @apply rounded-md border-dashed border-slate-100 border-2 opacity-75;
 }
 
 .wh-bar {
