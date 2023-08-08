@@ -132,7 +132,7 @@ input {
 
 .handle {
   @apply max-sm:hidden; /* Don't show on mobile. */
-  @apply h-full w-4 flex flex-col justify-center select-none;
+  @apply h-full w-10 flex flex-col justify-center select-none;
   @apply row-span-3 md:row-span-1;
 }
 
