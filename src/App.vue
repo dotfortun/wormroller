@@ -191,7 +191,7 @@ const massStatus = ref(stages[0]);
       </draggable>
     </div>
   </main>
-  <footer>
+  <footer class="container">
     <div>
       <p>
         Created by
