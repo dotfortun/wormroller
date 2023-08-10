@@ -125,9 +125,13 @@ input {
 
 .ship {
   @apply mx-auto my-4 h-min;
-  @apply flex flex-col items-center gap-2;
-  @apply sm:grid sm:gap-4;
+  @apply flex flex-col items-center;
+  @apply sm:grid sm:gap-4 sm:justify-items-center;
   @apply sm:grid-cols-[2rem_1fr] md:grid-cols-[2rem_1fr_1fr_1fr_1fr];
+
+  column-gap: 1rem;
+  row-gap: 0;
+  grid-template-rows: 1fr 0;
 }
 
 .handle {

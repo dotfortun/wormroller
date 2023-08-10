@@ -43,8 +43,6 @@ watch(
     solver(rollFast);
   }
 );
-
-const massStatus = ref(stages[0]);
 </script>
 
 <template>
@@ -228,7 +226,7 @@ option:disabled {
 }
 
 .ghost {
-  @apply rounded-md border-dashed border-slate-100 border-2 opacity-75;
+  @apply rounded-md border-dashed border-slate-100 border-2 opacity-10;
 }
 
 .wh-bar {
