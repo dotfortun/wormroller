@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 
 import { wormholes, stages } from "../wormholes"
 
@@ -7,6 +7,14 @@ export const useSolverStore = defineStore('solver', () => {
 
   const selectedWH = ref(wormholes[0]);
   const selectedStage = ref(stages[0]);
+
+  const url = computed(() => new URL(window.location));
+  if (url.value.search) {
+    const params = new URLSearchParams(url.value.search);
+    selectedWH.value = wormholes.find((elem) => {
+      return elem.type.toLowerCase() === params.get("sig").toLowerCase()
+    });
+  }
 
   const planMassKg = computed(() => ({
     med: (selectedStage.value.mass(selectedWH.value.totalMass * 1) - totalPlanMass.value),

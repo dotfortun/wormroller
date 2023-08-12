@@ -78,6 +78,10 @@ div.sliders {
 }
 
 input {
-  @apply w-1/2;
+  @apply w-1/2 mr-2;
+}
+
+label {
+  @apply flex align-middle;
 }
 </style>

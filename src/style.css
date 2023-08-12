@@ -45,7 +45,7 @@ h4 {
 }
 
 select {
-  @apply rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white text-xl focus:ring-blue-500 focus:border-blue-500;
+  @apply rounded-lg block w-full p-2.5 mb-4 bg-gray-700 border-gray-600 placeholder-gray-400 text-white text-xl focus:ring-blue-500 focus:border-blue-500;
   @apply border border-gray-300 focus:border-blue-500;
 }
 
@@ -61,20 +61,17 @@ button {
 }
 
 select {
-  @apply col-span-1 bg-gray-700;
+  @apply col-span-1 bg-gray-700 w-fit;
 }
 
 footer {
   @apply flex flex-row content-center justify-between p-4 text-slate-400;
   @apply max-lg:flex-col max-lg:items-center max-lg:text-center;
+  @apply w-full md:w-10/12 md:max-w-full mx-auto;
 }
 
 footer a {
   @apply text-cyan-400 decoration-solid;
-}
-
-.controls {
-  @apply grid grid-cols-2 content-center justify-between gap-2 mt-2;
 }
 
 .mass-label {

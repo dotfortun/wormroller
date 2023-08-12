@@ -43,14 +43,43 @@ watch(
     solver(rollFast);
   }
 );
-
-const massStatus = ref(stages[0]);
 </script>
 
 <template>
   <main class="container">
     <div class="wh-info">
-      <h2 class="col-span-full">{{ store.selectedWH.type }}</h2>
+      <select v-model="store.selectedWH" @change="solver(rollFast)">
+        <option disabled>Static</option>
+        <option
+          v-for="wh in wormholes.filter((elem) =>
+            elem.link_types.includes('static')
+          )"
+          :key="wh.type"
+          :value="wh"
+        >
+          {{ wh.type }}
+        </option>
+        <option disabled>Pochven</option>
+        <option
+          v-for="wh in wormholes.filter((elem) =>
+            elem.link_types.includes('pochven')
+          )"
+          :key="wh.type"
+          :value="wh"
+        >
+          {{ wh.type }}
+        </option>
+        <option disabled>Wandering</option>
+        <option
+          v-for="wh in wormholes.filter((elem) =>
+            elem.link_types.includes('wandering')
+          )"
+          :key="wh.type"
+          :value="wh"
+        >
+          {{ wh.type }}
+        </option>
+      </select>
       <div class="col-span-all row-span-1">
         <span class="mass-label">Total Mass:</span>{{ " " }}
         <span>
@@ -74,48 +103,43 @@ const massStatus = ref(stages[0]);
           {{ displayTons ? "tons" : "kg" }}
         </span>
       </div>
+      <div class="col-span-full flex justify-around mt-4">
+        <button
+          class="w-max"
+          @click="
+            store.ships.push({
+              id: Math.floor(Math.random() * 1000000),
+              name: 'roller',
+              cold: 174_000_000,
+              hot: 274_000_000,
+              isThreader: false,
+              color: {
+                h: randomInt(0, 360),
+                s: randomInt(42, 98),
+                l: randomInt(40, 90),
+              },
+            });
+            solver(rollFast);
+          "
+        >
+          Add Ship
+        </button>
+        <button
+          class="clear w-max"
+          @click="
+            store.plan.length = 0;
+            store.ships.length = 0;
+          "
+        >
+          Clear Ships
+        </button>
+      </div>
     </div>
     <div>
-      <select v-model="store.selectedWH" @change="solver(rollFast)">
-        <option v-for="wh in wormholes" :key="wh.type" :value="wh">
-          {{ wh.type }}
-        </option>
-      </select>
       <div class="controls">
-        <div class="col-span-full">
-          <button
-            class="w-max"
-            @click="
-              store.ships.push({
-                id: Math.floor(Math.random() * 1000000),
-                name: 'roller',
-                cold: 174_000_000,
-                hot: 274_000_000,
-                isThreader: false,
-                color: {
-                  h: randomInt(0, 360),
-                  s: randomInt(42, 98),
-                  l: randomInt(40, 90),
-                },
-              });
-              solver(rollFast);
-            "
-          >
-            Add Ship
-          </button>
-          <button
-            class="clear w-max"
-            @click="
-              store.plan.length = 0;
-              store.ships.length = 0;
-            "
-          >
-            Clear Ships
-          </button>
-        </div>
         <Toggle label-left="kg" label-right="tons" v-model="displayTons" />
         <Toggle label-left="icons" label-right="text" v-model="useText" />
-        <div class="col-span-full h-24">
+        <div class="col-span-full h-24 w-full pr-8">
           <RadioGroup
             v-model:model-value="store.selectedStage"
             :options="stages"
@@ -149,6 +173,7 @@ const massStatus = ref(stages[0]);
         @end="solver(rollFast)"
         :on-remove="(ev) => console.log(ev)"
         handle=".handle"
+        ghost-class="ghost"
       >
         <template #item="{ element: ship, index: idx }">
           <Ship
@@ -164,11 +189,12 @@ const massStatus = ref(stages[0]);
       </draggable>
     </div>
   </main>
-  <footer>
+  <footer class="container">
     <div>
       <p>
-        Created by <a href="https://github.com/dotfortun">dotfortun</a> and
-        <a href="https://github.com/israeldail">israeldail</a>.
+        Created by
+        <a href="https://github.com/dotfortun" target="_blank">dotfortun</a> and
+        <a href="https://github.com/israeldail" target="_blank">israeldail</a>.
       </p>
       <p>
         <small>
@@ -179,7 +205,10 @@ const massStatus = ref(stages[0]);
     </div>
     <div>
       <p>
-        <a href="https://github.com/dotfortun/wormroller/issues">
+        <a
+          href="https://github.com/dotfortun/wormroller/labels/bug"
+          target="_blank"
+        >
           Found a bug? Tell us here!
         </a>
       </p>
@@ -188,6 +217,18 @@ const massStatus = ref(stages[0]);
 </template>
 
 <style scoped>
+.controls {
+  @apply grid grid-cols-2 justify-items-center gap-6 mt-2;
+}
+
+option:disabled {
+  @apply text-slate-400 font-bold bg-slate-800;
+}
+
+.ghost {
+  @apply rounded-md border-dashed border-slate-100 border-2 opacity-10;
+}
+
 .wh-bar {
   --slate-500: rgba(100 116 139 / 1);
   --danger-red: rgba(194 31 37 / 1);
