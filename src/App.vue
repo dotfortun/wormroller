@@ -3,13 +3,16 @@ import { ref, watch, computed } from "vue";
 import draggable from "vuedraggable";
 
 import { useSolverStore } from "./stores/solver";
+import { useShipStore } from "./stores/ship";
 
 import Toggle from "./components/Toggle.vue";
 import RadioGroup from "./components/RadioGroup.vue";
 import Ship from "./components/Ship.vue";
 
-const store = useSolverStore();
-const { wormholes, stages, solver, getJumpStyles } = store;
+const solverStore = useSolverStore();
+const { wormholes, stages, solver, getJumpStyles } = solverStore;
+const shipStore = useShipStore();
+const { addShip } = shipStore;
 
 const displayTons = ref(true);
 const rollFast = ref(true);
@@ -19,15 +22,11 @@ const displayMass = (value) => {
   return (value / (displayTons.value ? 1000 : 1)).toLocaleString();
 };
 
-const randomInt = (min, max) => {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-};
-
 const swapShips = (ev) => {
-  if (ev.newIdx >= 0 && ev.newIdx < store.ships.length) {
-    let a = store.ships[Math.min(ev.oldIdx, ev.newIdx)];
-    let b = store.ships[Math.max(ev.oldIdx, ev.newIdx)];
-    store.ships.splice(Math.min(ev.oldIdx, ev.newIdx), 2, b, a);
+  if (ev.newIdx >= 0 && ev.newIdx < solverStore.ships.length) {
+    let a = solverStore.ships[Math.min(ev.oldIdx, ev.newIdx)];
+    let b = solverStore.ships[Math.max(ev.oldIdx, ev.newIdx)];
+    solverStore.ships.splice(Math.min(ev.oldIdx, ev.newIdx), 2, b, a);
   }
 };
 
@@ -38,7 +37,11 @@ const copyShip = (ship) => {
 };
 
 watch(
-  [store.ships, () => store.selectedStage.name, () => store.selectedWH.type],
+  [
+    solverStore.ships,
+    () => solverStore.selectedStage.name,
+    () => solverStore.selectedWH.type,
+  ],
   () => {
     solver(rollFast);
   }
@@ -48,7 +51,7 @@ watch(
 <template>
   <main class="container">
     <div class="wh-info">
-      <select v-model="store.selectedWH" @change="solver(rollFast)">
+      <select v-model="solverStore.selectedWH" @change="solver(rollFast)">
         <option disabled>Static</option>
         <option
           v-for="wh in wormholes.filter((elem) =>
@@ -83,42 +86,44 @@ watch(
       <div class="col-span-all row-span-1">
         <span class="mass-label">Total Mass:</span>{{ " " }}
         <span>
-          {{ displayMass(store.selectedWH.totalMass * 0.9) }} —
-          {{ displayMass(store.selectedWH.totalMass * 1.1) }}
+          {{ displayMass(solverStore.selectedWH.totalMass * 0.9) }} —
+          {{ displayMass(solverStore.selectedWH.totalMass * 1.1) }}
           {{ displayTons ? "tons" : "kg" }}
         </span>
       </div>
       <div class="col-span-all row-span-1">
         <span class="mass-label">Jump Mass:</span>{{ " " }}
         <span>
-          {{ displayMass(store.selectedWH.jumpMass) }}
+          {{ displayMass(solverStore.selectedWH.jumpMass) }}
           {{ displayTons ? "tons" : "kg" }}
         </span>
       </div>
       <div class="col-span-all row-span-1">
         <span class="mass-label">Remaining:</span>{{ " " }}
         <span>
-          {{ displayMass(store.planMassKg.min) }} —
-          {{ displayMass(store.planMassKg.max) }}
+          {{ displayMass(solverStore.planMassKg.min) }} —
+          {{ displayMass(solverStore.planMassKg.max) }}
           {{ displayTons ? "tons" : "kg" }}
         </span>
       </div>
-      <div class="col-span-full flex justify-around mt-4">
+      <div class="col-span-full flex justify-around mt-4 content-center">
+        <select
+          class="text-sm mb-0"
+          v-model="shipStore.selectedShip"
+          @change="solver(rollFast)"
+        >
+          <option
+            v-for="ship in shipStore.savedShips"
+            :key="ship.name"
+            :value="ship"
+          >
+            {{ ship.name }}
+          </option>
+        </select>
         <button
           class="w-max"
           @click="
-            store.ships.push({
-              id: Math.floor(Math.random() * 1000000),
-              name: 'roller',
-              cold: 174_000_000,
-              hot: 274_000_000,
-              isThreader: false,
-              color: {
-                h: randomInt(0, 360),
-                s: randomInt(42, 98),
-                l: randomInt(40, 90),
-              },
-            });
+            addShip(solverStore.ships);
             solver(rollFast);
           "
         >
@@ -127,8 +132,8 @@ watch(
         <button
           class="clear w-max"
           @click="
-            store.plan.length = 0;
-            store.ships.length = 0;
+            solverStore.plan.length = 0;
+            solverStore.ships.length = 0;
           "
         >
           Clear Ships
@@ -141,7 +146,7 @@ watch(
         <Toggle label-left="icons" label-right="text" v-model="useText" />
         <div class="col-span-full h-24 w-full pr-8">
           <RadioGroup
-            v-model:model-value="store.selectedStage"
+            v-model:model-value="solverStore.selectedStage"
             :options="stages"
           />
         </div>
@@ -149,9 +154,14 @@ watch(
     </div>
     <hr class="col-span-full my-4" />
     <h3>Plan</h3>
-    <div :class="`wh-bar h-12 ${store.selectedStage.name.replace(/\s/, '_')}`">
+    <div
+      :class="`wh-bar h-12 ${solverStore.selectedStage.name.replace(
+        /\s/,
+        '_'
+      )}`"
+    >
       <div
-        v-for="jump in store.plan"
+        v-for="jump in solverStore.plan"
         class="ship-bar"
         :style="getJumpStyles(jump)"
       >
@@ -164,11 +174,11 @@ watch(
         </template>
       </div>
     </div>
-    <hr v-if="store.ships.length" class="col-span-full my-4" />
+    <hr v-if="solverStore.ships.length" class="col-span-full my-4" />
     <div class="ships-list">
-      <h3 v-if="store.ships.length">Ships</h3>
+      <h3 v-if="solverStore.ships.length">Ships</h3>
       <draggable
-        v-model="store.ships"
+        v-model="solverStore.ships"
         item-key="id"
         @end="solver(rollFast)"
         :on-remove="(ev) => console.log(ev)"
@@ -180,10 +190,11 @@ watch(
             :idx="idx"
             :ship="ship"
             :use-tons="displayTons"
-            @change:ship="store.ships.splice(idx, 1, $event)"
+            @change:ship="solverStore.ships.splice(idx, 1, $event)"
             @change:ship-idx="swapShips($event)"
-            @delete:ship="store.ships.splice(idx, 1)"
-            @copy:ship="store.ships.push(copyShip(ship))"
+            @delete:ship="solverStore.ships.splice(idx, 1)"
+            @copy:ship="solverStore.ships.push(copyShip(ship))"
+            @save:ship="shipStore.saveShip(ship)"
           />
         </template>
       </draggable>

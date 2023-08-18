@@ -15,7 +15,13 @@ const {
   useTons: Boolean,
   ship: Object,
 });
-defineEmits(["change:ship", "change:shipIdx", "delete:ship", "copy:ship"]);
+defineEmits([
+  "change:ship",
+  "change:shipIdx",
+  "delete:ship",
+  "copy:ship",
+  "save:ship",
+]);
 
 const updateShipProperty = (key, val) => {
   let updatedShip = ship;
@@ -90,13 +96,19 @@ const updateShipProperty = (key, val) => {
         class="rounded-full font-regular w-1/4"
         @click="$emit('copy:ship')"
       >
-        Copy
+        <font-awesome-icon icon="copy" />
+      </button>
+      <button
+        class="save rounded-full font-regular w-1/4"
+        @click="$emit('save:ship')"
+      >
+        <font-awesome-icon icon="floppy-disk" />
       </button>
       <button
         class="clear rounded-full font-regular w-1/4"
         @click="$emit('delete:ship')"
       >
-        X
+        <font-awesome-icon icon="x" />
       </button>
     </div>
     <div class="buttons sm:hidden">
