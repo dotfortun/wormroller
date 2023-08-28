@@ -2,6 +2,8 @@
 
 This is a simple app built with Vue on Vite to help plan rolling off wormholes in Eve Online.
 
+You can see the app in action here: https://wormroller.dotlag.space
+
 ## Documentation
 
 Clone the project into your working directory, then run `npm install --save-dev` and `npm run dev`.
