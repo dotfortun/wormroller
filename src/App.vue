@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, computed } from "vue";
+import { ref, watch } from "vue";
 import draggable from "vuedraggable";
 
 import { useSolverStore } from "./stores/solver";
@@ -7,16 +7,18 @@ import { useShipStore } from "./stores/ship";
 
 import Toggle from "./components/Toggle.vue";
 import RadioGroup from "./components/RadioGroup.vue";
+import RollerControls from "./components/RollerControls.vue";
 import Ship from "./components/Ship.vue";
 
 const solverStore = useSolverStore();
 const { wormholes, stages, solver, getJumpStyles } = solverStore;
 const shipStore = useShipStore();
-const { addShip } = shipStore;
 
 const displayTons = ref(true);
 const rollFast = ref(true);
 const useText = ref(true);
+
+const showRollerControls = ref(true);
 
 const displayMass = (value) => {
   return (value / (displayTons.value ? 1000 : 1)).toLocaleString();
@@ -106,7 +108,9 @@ watch(
           {{ displayTons ? "tons" : "kg" }}
         </span>
       </div>
-      <div class="col-span-full flex justify-around mt-4 content-center">
+      <div
+        class="col-span-full flex flex-wrap justify-around mt-4 content-center gap-3"
+      >
         <select
           class="text-sm mb-0"
           v-model="shipStore.selectedShip"
@@ -120,24 +124,7 @@ watch(
             {{ ship.name }}
           </option>
         </select>
-        <button
-          class="w-max"
-          @click="
-            addShip(solverStore.ships);
-            solver(rollFast);
-          "
-        >
-          Add Ship
-        </button>
-        <button
-          class="clear w-max"
-          @click="
-            solverStore.plan.length = 0;
-            solverStore.ships.length = 0;
-          "
-        >
-          Clear Ships
-        </button>
+        <RollerControls :use-tons="displayTons" v-model="showRollerControls" />
       </div>
     </div>
     <div>
@@ -194,7 +181,6 @@ watch(
             @change:ship-idx="swapShips($event)"
             @delete:ship="solverStore.ships.splice(idx, 1)"
             @copy:ship="solverStore.ships.push(copyShip(ship))"
-            @save:ship="shipStore.saveShip(ship)"
           />
         </template>
       </draggable>

@@ -34,31 +34,30 @@ export const useShipStore = defineStore("ships", () => {
   }
 
   const saveShip = (ship) => {
-    console.log(selectedShip.value);
-    const oldShip = savedShips.value.findIndex(i => i.name === ship.name);
-    if (oldShip >= 0) {
-      savedShips.value.splice(oldShip, 1, {
-        name: ship.name,
-        cold: ship.cold,
-        hot: ship.hot,
-        isThreader: ship.isThreader
-      })
-    } else {
-      savedShips.value.push({
-        name: ship.name,
-        cold: ship.cold,
-        hot: ship.hot,
-        isThreader: ship.isThreader
-      })
-    }
-    console.log(selectedShip.value);
+    savedShips.value.push({
+      name: ship.name,
+      cold: ship.cold,
+      hot: ship.hot,
+      isThreader: ship.isThreader
+    })
   }
+
+  const updateShipProperty = (key, val, ship) => {
+    let updatedShip = ship;
+    if (["hot", "cold"].includes(key)) {
+      updatedShip[key] = val * (useTons ? 1 : 1000);
+    } else {
+      updatedShip[key] = val;
+    }
+    return updatedShip;
+  };
 
   return {
     savedShips,
     selectedShip,
     addShip,
-    saveShip
+    saveShip,
+    updateShipProperty
   }
 }, {
   persist: true

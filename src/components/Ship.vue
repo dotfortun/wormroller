@@ -3,8 +3,10 @@ import ColorPicker from "./ColorPicker.vue";
 import Toggle from "./Toggle.vue";
 
 import { useSolverStore } from "../stores/solver";
+import { useShipStore } from "../stores/ship";
 
 const store = useSolverStore();
+const { updateShipProperty } = useShipStore();
 
 const {
   useTons = false,
@@ -22,16 +24,6 @@ defineEmits([
   "copy:ship",
   "save:ship",
 ]);
-
-const updateShipProperty = (key, val) => {
-  let updatedShip = ship;
-  if (["hot", "cold"].includes(key)) {
-    updatedShip[key] = val * (useTons ? 1 : 1000);
-  } else {
-    updatedShip[key] = val;
-  }
-  return updatedShip;
-};
 </script>
 
 <template>
@@ -44,7 +36,10 @@ const updateShipProperty = (key, val) => {
         type="text"
         :value="ship.name"
         @change="
-          $emit('change:ship', updateShipProperty('name', $event.target.value))
+          $emit(
+            'change:ship',
+            updateShipProperty('name', $event.target.value, ship)
+          )
         "
         placeholder="Ship Name"
       />
@@ -57,7 +52,8 @@ const updateShipProperty = (key, val) => {
               'change:ship',
               updateShipProperty(
                 'cold',
-                $event.target.valueAsNumber * (useTons ? 1000 : 1)
+                $event.target.valueAsNumber * (useTons ? 1000 : 1),
+                ship
               )
             )
           "
@@ -75,7 +71,9 @@ const updateShipProperty = (key, val) => {
               'change:ship',
               updateShipProperty(
                 'hot',
-                $event.target.valueAsNumber * (useTons ? 1000 : 1)
+                $event.target.valueAsNumber * (useTons ? 1000 : 1),
+                $event.target.value,
+                ship
               )
             )
           "
@@ -97,12 +95,6 @@ const updateShipProperty = (key, val) => {
         @click="$emit('copy:ship')"
       >
         <font-awesome-icon icon="copy" />
-      </button>
-      <button
-        class="save rounded-full font-regular w-1/4"
-        @click="$emit('save:ship')"
-      >
-        <font-awesome-icon icon="floppy-disk" />
       </button>
       <button
         class="clear rounded-full font-regular w-1/4"
