@@ -38,7 +38,7 @@ defineEmits([
         @change="
           $emit(
             'change:ship',
-            updateShipProperty('name', $event.target.value, ship)
+            updateShipProperty('name', $event.target.value, ship, useTons)
           )
         "
         placeholder="Ship Name"
@@ -53,7 +53,8 @@ defineEmits([
               updateShipProperty(
                 'cold',
                 $event.target.valueAsNumber * (useTons ? 1000 : 1),
-                ship
+                ship,
+                useTons
               )
             )
           "
@@ -73,7 +74,8 @@ defineEmits([
                 'hot',
                 $event.target.valueAsNumber * (useTons ? 1000 : 1),
                 $event.target.value,
-                ship
+                ship,
+                useTons
               )
             )
           "

@@ -42,7 +42,7 @@ export const useShipStore = defineStore("ships", () => {
     })
   }
 
-  const updateShipProperty = (key, val, ship) => {
+  const updateShipProperty = (key, val, ship, useTons) => {
     let updatedShip = ship;
     if (["hot", "cold"].includes(key)) {
       updatedShip[key] = val * (useTons ? 1 : 1000);
