@@ -7,6 +7,7 @@ export const useSolverStore = defineStore('solver', () => {
 
   const selectedWH = ref(wormholes[0]);
   const selectedStage = ref(stages[0]);
+  const plan = ref([]);
 
   const url = computed(() => new URL(window.location));
   if (url.value.search) {
@@ -23,7 +24,6 @@ export const useSolverStore = defineStore('solver', () => {
   }));
 
   const ships = ref([]);
-  const plan = ref([]);
 
   const totalPlanMass = computed(() => plan.value.reduce((prevTotal, jump) => {
     return prevTotal + jump.mass
@@ -133,6 +133,6 @@ export const useSolverStore = defineStore('solver', () => {
     plan,
     solver,
     resetApp,
-    getJumpStyles
+    getJumpStyles,
   }
 })

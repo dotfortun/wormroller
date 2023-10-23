@@ -3,8 +3,10 @@ import ColorPicker from "./ColorPicker.vue";
 import Toggle from "./Toggle.vue";
 
 import { useSolverStore } from "../stores/solver";
+import { useShipStore } from "../stores/ship";
 
 const store = useSolverStore();
+const { updateShipProperty } = useShipStore();
 
 const {
   useTons = false,
@@ -15,17 +17,13 @@ const {
   useTons: Boolean,
   ship: Object,
 });
-defineEmits(["change:ship", "change:shipIdx", "delete:ship", "copy:ship"]);
-
-const updateShipProperty = (key, val) => {
-  let updatedShip = ship;
-  if (["hot", "cold"].includes(key)) {
-    updatedShip[key] = val * (useTons ? 1 : 1000);
-  } else {
-    updatedShip[key] = val;
-  }
-  return updatedShip;
-};
+defineEmits([
+  "change:ship",
+  "change:shipIdx",
+  "delete:ship",
+  "copy:ship",
+  "save:ship",
+]);
 </script>
 
 <template>
@@ -38,7 +36,10 @@ const updateShipProperty = (key, val) => {
         type="text"
         :value="ship.name"
         @change="
-          $emit('change:ship', updateShipProperty('name', $event.target.value))
+          $emit(
+            'change:ship',
+            updateShipProperty('name', $event.target.value, ship, useTons)
+          )
         "
         placeholder="Ship Name"
       />
@@ -51,7 +52,9 @@ const updateShipProperty = (key, val) => {
               'change:ship',
               updateShipProperty(
                 'cold',
-                $event.target.valueAsNumber * (useTons ? 1000 : 1)
+                $event.target.valueAsNumber * (useTons ? 1000 : 1),
+                ship,
+                useTons
               )
             )
           "
@@ -69,7 +72,10 @@ const updateShipProperty = (key, val) => {
               'change:ship',
               updateShipProperty(
                 'hot',
-                $event.target.valueAsNumber * (useTons ? 1000 : 1)
+                $event.target.valueAsNumber * (useTons ? 1000 : 1),
+                $event.target.value,
+                ship,
+                useTons
               )
             )
           "
@@ -90,13 +96,13 @@ const updateShipProperty = (key, val) => {
         class="rounded-full font-regular w-1/4"
         @click="$emit('copy:ship')"
       >
-        Copy
+        <font-awesome-icon icon="copy" />
       </button>
       <button
         class="clear rounded-full font-regular w-1/4"
         @click="$emit('delete:ship')"
       >
-        X
+        <font-awesome-icon icon="x" />
       </button>
     </div>
     <div class="buttons sm:hidden">
