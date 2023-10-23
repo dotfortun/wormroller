@@ -1,6 +1,6 @@
 # Wormroller (To be renamed maybe?)
 
-The repo for http://wormroller.dotlag.info.
+The repo for http://wormroller.dotlag.space.
 
 This is just a calculator built on Vue to help simplify the process of rolling wormholes in Eve Online.
 
