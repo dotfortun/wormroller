@@ -1,4 +1,4 @@
-# Wormroller (To be renamed maybe?)
+# Wormroller (To be renamed *eventually*?)
 
 This is a simple app built with Vue on Vite to help plan rolling off wormholes in Eve Online.
 
