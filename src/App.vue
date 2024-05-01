@@ -198,8 +198,28 @@ watch(
       </p>
       <p>
         <small>
-          Donations to Peter Dostoevsky in Eve Online will be turned into
-          lossmails.
+          <ul>
+            <li class="list-none">
+              Donations to Peter Dostoevsky in Eve Online will be turned into
+              lossmails.
+            </li>
+            <li class="list-none">
+              <a
+                href="https://www.eveonline.com/signup?invc=5d52b821-87c0-4c81-bd0a-2cd88e9001b6"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Try Eve Online
+              </a>
+              or
+              <a
+                href="https://www.buymeacoffee.com/shanebelldev"
+                target="_blank"
+                rel="noopener noreferrer"
+                >buy me a coffee</a
+              >
+            </li>
+          </ul>
         </small>
       </p>
     </div>
