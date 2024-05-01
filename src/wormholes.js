@@ -14,12 +14,12 @@ export const stages = [
 ]
 
 export const wormholes = [
-  {
-    "type": "A009",
-    "totalMass": 500000000,
-    "jumpMass": 5000000,
-    "link_types": ["wandering"]
-  },
+  // {
+  //   "type": "A009",
+  //   "totalMass": 500000000,
+  //   "jumpMass": 5000000,
+  //   "link_types": ["wandering"]
+  // },
   {
     "type": "A239",
     "totalMass": 2000000000,
@@ -68,12 +68,12 @@ export const wormholes = [
     "jumpMass": 375000000,
     "link_types": ["wandering"]
   },
-  {
-    "type": "C008",
-    "totalMass": 1000000000,
-    "jumpMass": 5000000,
-    "link_types": ["wandering"]
-  },
+  // {
+  //   "type": "C008",
+  //   "totalMass": 1000000000,
+  //   "jumpMass": 5000000,
+  //   "link_types": ["wandering"]
+  // },
   {
     "type": "C125",
     "totalMass": 1000000000,
@@ -134,12 +134,12 @@ export const wormholes = [
     "jumpMass": 375000000,
     "link_types": ["static"]
   },
-  {
-    "type": "E004",
-    "totalMass": 1000000000,
-    "jumpMass": 5000000,
-    "link_types": ["wandering"]
-  },
+  // {
+  //   "type": "E004",
+  //   "totalMass": 1000000000,
+  //   "jumpMass": 5000000,
+  //   "link_types": ["wandering"]
+  // },
   {
     "type": "E175",
     "totalMass": 2000000000,
@@ -176,12 +176,12 @@ export const wormholes = [
     "jumpMass": 62000000,
     "link_types": ["wandering"]
   },
-  {
-    "type": "G008",
-    "totalMass": 1000000000,
-    "jumpMass": 5000000,
-    "link_types": ["wandering"]
-  },
+  // {
+  //   "type": "G008",
+  //   "totalMass": 1000000000,
+  //   "jumpMass": 5000000,
+  //   "link_types": ["wandering"]
+  // },
   {
     "type": "G024",
     "totalMass": 2000000000,
@@ -230,12 +230,12 @@ export const wormholes = [
     "jumpMass": 375000000,
     "link_types": ["static"]
   },
-  {
-    "type": "L005",
-    "totalMass": 1000000000,
-    "jumpMass": 5000000,
-    "link_types": ["wandering"]
-  },
+  // {
+  //   "type": "L005",
+  //   "totalMass": 1000000000,
+  //   "jumpMass": 5000000,
+  //   "link_types": ["wandering"]
+  // },
   {
     "type": "L031",
     "totalMass": 3000000000,
@@ -254,12 +254,12 @@ export const wormholes = [
     "jumpMass": 62000000,
     "link_types": ["wandering"]
   },
-  {
-    "type": "M001",
-    "totalMass": 1000000000,
-    "jumpMass": 5000000,
-    "link_types": ["wandering"]
-  },
+  // {
+  //   "type": "M001",
+  //   "totalMass": 1000000000,
+  //   "jumpMass": 5000000,
+  //   "link_types": ["wandering"]
+  // },
   {
     "type": "M164",
     "totalMass": 2000000000,
@@ -356,12 +356,12 @@ export const wormholes = [
     "jumpMass": 62000000,
     "link_types": ["static"]
   },
-  {
-    "type": "Q003",
-    "totalMass": 1000000000,
-    "jumpMass": 5000000,
-    "link_types": ["wandering"]
-  },
+  // {
+  //   "type": "Q003",
+  //   "totalMass": 1000000000,
+  //   "jumpMass": 5000000,
+  //   "link_types": ["wandering"]
+  // },
   {
     "type": "Q063",
     "totalMass": 500000000,
@@ -518,12 +518,12 @@ export const wormholes = [
     "jumpMass": 62000000,
     "link_types": ["static"]
   },
-  {
-    "type": "Z006",
-    "totalMass": 1000000000,
-    "jumpMass": 5000000,
-    "link_types": ["wandering"]
-  },
+  // {
+  //   "type": "Z006",
+  //   "totalMass": 1000000000,
+  //   "jumpMass": 5000000,
+  //   "link_types": ["wandering"]
+  // },
   {
     "type": "Z060",
     "totalMass": 1000000000,
