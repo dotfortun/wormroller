@@ -192,13 +192,15 @@ watch(
   <footer class="container">
     <div>
       <p>
-        Created by
-        <a href="https://github.com/dotfortun" target="_blank">dotfortun</a> and
-        <a href="https://github.com/israeldail" target="_blank">israeldail</a>.
-      </p>
-      <p>
         <small>
           <ul>
+            <li class="list-none">
+              Created by
+              <a href="https://github.com/dotfortun">dotfortun</a> and
+              <a href="https://github.com/israeldail" target="_blank"
+                >israeldail</a
+              >.
+            </li>
             <li class="list-none">
               Donations to Peter Dostoevsky in Eve Online will be turned into
               lossmails.
@@ -223,6 +225,7 @@ watch(
         </small>
       </p>
     </div>
+
     <div>
       <p>
         <a
