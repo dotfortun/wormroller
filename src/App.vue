@@ -198,8 +198,8 @@ watch(
       </p>
       <p>
         <small>
-          ISK donations to Peter Dostoevsky will be turned into explosions
-          somehow.
+          Donations to Peter Dostoevsky in Eve Online will be turned into
+          lossmails.
         </small>
       </p>
     </div>
