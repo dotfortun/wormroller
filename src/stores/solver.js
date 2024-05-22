@@ -29,12 +29,35 @@ export const useSolverStore = defineStore('solver', () => {
     return prevTotal + jump.mass
   }, 0));
 
+  const getTextColor = (h, s, l) => {
+    const hslToRgb = (h, s, l) => {
+      s /= 100;
+      l /= 100;
+      const k = n => (n + h / 30) % 12;
+      const a = s * Math.min(l, 1 - l);
+      const f = n =>
+        l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+      return [255 * f(0), 255 * f(8), 255 * f(4)];
+    };
+
+    const [r, g, b] = hslToRgb(h, s, l);
+    console.log({
+      hsl: [h, s, l],
+      rgb: [r, g, b]
+    })
+
+    if ((r * 0.299 + g * 0.587 + b * 0.114) > 186) {
+      return "#000000"
+    }
+    return "#ffffff"
+  }
+
   function getJumpStyles(jump) {
     const ship = ships.value.filter((i) => i.id === jump.shipId)[0];
 
     return {
       background: ship ? `hsl(${ship.color.h}, ${ship.color.s}%, ${ship.color.l}%)` : `hsl(180, 50%, 50%)`,
-      color: ship ? `hsl(0, 0%, ${Math.abs((99 - ship.color.l) % 100)}%)` : `hsl(180, 50%, 50%)`,
+      color: getTextColor(ship.color.h, ship.color.s, ship.color.l),
       width: `${(jump.mass / (selectedStage.value.mass(selectedWH.value.totalMass) * 1.1)) * 100}%`,
     };
   }
