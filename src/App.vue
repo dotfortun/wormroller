@@ -7,6 +7,7 @@ import { useSolverStore } from "./stores/solver";
 import Toggle from "./components/Toggle.vue";
 import RadioGroup from "./components/RadioGroup.vue";
 import Ship from "./components/Ship.vue";
+import PolarTimer from "./components/PolarTimer.vue";
 
 const store = useSolverStore();
 const { wormholes, stages, solver, getJumpStyles } = store;
@@ -47,147 +48,7 @@ watch(
 
 <template>
   <main class="container">
-    <div class="wh-info">
-      <select v-model="store.selectedWH" @change="solver(rollFast)">
-        <option disabled>Static</option>
-        <option
-          v-for="wh in wormholes.filter((elem) =>
-            elem.link_types.includes('static')
-          )"
-          :key="wh.type"
-          :value="wh"
-        >
-          {{ wh.type }}
-        </option>
-        <option disabled>Pochven</option>
-        <option
-          v-for="wh in wormholes.filter((elem) =>
-            elem.link_types.includes('pochven')
-          )"
-          :key="wh.type"
-          :value="wh"
-        >
-          {{ wh.type }}
-        </option>
-        <option disabled>Wandering</option>
-        <option
-          v-for="wh in wormholes.filter((elem) =>
-            elem.link_types.includes('wandering')
-          )"
-          :key="wh.type"
-          :value="wh"
-        >
-          {{ wh.type }}
-        </option>
-      </select>
-      <div class="col-span-all row-span-1">
-        <span class="mass-label">Total Mass:</span>{{ " " }}
-        <span>
-          {{ displayMass(store.selectedWH.totalMass * 0.9) }} —
-          {{ displayMass(store.selectedWH.totalMass * 1.1) }}
-          {{ displayTons ? "tons" : "kg" }}
-        </span>
-      </div>
-      <div class="col-span-all row-span-1">
-        <span class="mass-label">Jump Mass:</span>{{ " " }}
-        <span>
-          {{ displayMass(store.selectedWH.jumpMass) }}
-          {{ displayTons ? "tons" : "kg" }}
-        </span>
-      </div>
-      <div class="col-span-all row-span-1">
-        <span class="mass-label">Remaining:</span>{{ " " }}
-        <span>
-          {{ displayMass(store.planMassKg.min) }} —
-          {{ displayMass(store.planMassKg.max) }}
-          {{ displayTons ? "tons" : "kg" }}
-        </span>
-      </div>
-      <div class="col-span-full flex justify-around mt-4">
-        <button
-          class="w-max"
-          @click="
-            store.ships.push({
-              id: Math.floor(Math.random() * 1000000),
-              name: 'roller',
-              cold: 174_000_000,
-              hot: 274_000_000,
-              isThreader: false,
-              color: {
-                h: randomInt(0, 360),
-                s: randomInt(42, 98),
-                l: randomInt(40, 90),
-              },
-            });
-            solver(rollFast);
-          "
-        >
-          Add Ship
-        </button>
-        <button
-          class="clear w-max"
-          @click="
-            store.plan.length = 0;
-            store.ships.length = 0;
-          "
-        >
-          Clear Ships
-        </button>
-      </div>
-    </div>
-    <div>
-      <div class="controls">
-        <Toggle label-left="kg" label-right="tons" v-model="displayTons" />
-        <Toggle label-left="icons" label-right="text" v-model="useText" />
-        <div class="col-span-full h-24 w-full pr-8">
-          <RadioGroup
-            v-model:model-value="store.selectedStage"
-            :options="stages"
-          />
-        </div>
-      </div>
-    </div>
-    <hr class="col-span-full my-4" />
-    <h3>Plan</h3>
-    <div :class="`wh-bar h-12 ${store.selectedStage.name.replace(/\s/, '_')}`">
-      <div
-        v-for="jump in store.plan"
-        class="ship-bar"
-        :style="getJumpStyles(jump)"
-      >
-        <template v-if="useText">
-          {{ jump.jumpState }}
-        </template>
-        <template v-else>
-          <font-awesome-icon v-if="jump.jumpState === 'hot'" icon="fire" />
-          <font-awesome-icon v-else icon="snowflake" />
-        </template>
-      </div>
-    </div>
-    <hr v-if="store.ships.length" class="col-span-full my-4" />
-    <div class="ships-list">
-      <h3 v-if="store.ships.length">Ships</h3>
-      <draggable
-        v-model="store.ships"
-        item-key="id"
-        @end="solver(rollFast)"
-        :on-remove="(ev) => console.log(ev)"
-        handle=".handle"
-        ghost-class="ghost"
-      >
-        <template #item="{ element: ship, index: idx }">
-          <Ship
-            :idx="idx"
-            :ship="ship"
-            :use-tons="displayTons"
-            @change:ship="store.ships.splice(idx, 1, $event)"
-            @change:ship-idx="swapShips($event)"
-            @delete:ship="store.ships.splice(idx, 1)"
-            @copy:ship="store.ships.push(copyShip(ship))"
-          />
-        </template>
-      </draggable>
-    </div>
+    <PolarTimer />
   </main>
   <footer class="container">
     <div>
